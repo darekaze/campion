@@ -1,7 +1,7 @@
 {
-  "name": "kunci-music-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue"
+	"name": "kunci-music-app",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "vue"
 }
