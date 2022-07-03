@@ -1,0 +1,52 @@
+function updatenotification() {
+	if ('mediaSession' in navigator) {
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: Amplitude.getActiveSongMetadata().name,
+			artist: Amplitude.getActiveSongMetadata().artist,
+			artwork: [
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '96x96',
+					type: 'image/png',
+				},
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '128x128',
+					type: 'image/png',
+				},
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '256x256',
+					type: 'image/png',
+				},
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '384x384',
+					type: 'image/png',
+				},
+				{
+					src: Amplitude.getActiveSongMetadata().cover_art_url,
+					sizes: '512x512',
+					type: 'image/png',
+				},
+			],
+		})
+		navigator.mediaSession.setActionHandler('play', function () {
+			Amplitude.play()
+		})
+		navigator.mediaSession.setActionHandler('pause', function () {
+			Amplitude.pause()
+		})
+		navigator.mediaSession.setActionHandler('previoustrack', function () {
+			Amplitude.prev((playlistKey = null))
+		})
+		navigator.mediaSession.setActionHandler('nexttrack', function () {
+			Amplitude.next((playlistKey = null))
+		})
+	}
+}
