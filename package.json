@@ -1,57 +1,60 @@
 {
-  "name": "kunci-music-app",
-  "private": true,
-  "version": "0.0.1",
-  "type": "module",
-  "description": "An Ionic project",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@capacitor/app": "1.1.1",
-    "@capacitor/core": "3.6.0",
-    "@capacitor/haptics": "1.1.4",
-    "@capacitor/keyboard": "1.2.3",
-    "@capacitor/status-bar": "1.0.8",
-    "@ionic/vue": "^6.0.0",
-    "@ionic/vue-router": "^6.0.0",
-    "core-js": "^3.6.5",
-    "vue": "^3.2.21",
-    "vue-router": "^4.0.12"
-  },
-  "devDependencies": {
-    "@capacitor/cli": "3.6.0",
-    "@typescript-eslint/eslint-plugin": "^5.6.0",
-    "@typescript-eslint/parser": "^5.6.0",
-    "@vitejs/plugin-vue": "^2.3.3",
-    "@vue/test-utils": "^2.0.0",
-    "cypress": "^8.7.0",
-    "eslint": "^8.4.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "prettier": "^2.7.1",
-    "typescript": "^4.3.5",
-    "vite": "^2.9.13",
-    "vite-plugin-eslint": "^1.6.1",
-    "vitest": "^0.17.0",
-    "vue-tsc": "^0.38.2"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "prettier": {
-    "printWidth": 100,
-    "endOfLine": "lf",
-    "semi": false,
-    "useTabs": true,
-    "singleQuote": true,
-    "trailingComma": "all",
-    "jsxBracketSameLine": true,
-    "arrowParens": "always"
-  }
+	"name": "kunci-music-app",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"description": "An Ionic project",
+	"scripts": {
+		"dev": "vite",
+		"build": "vue-tsc --noEmit && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@capacitor/app": "1.1.1",
+		"@capacitor/core": "3.6.0",
+		"@capacitor/haptics": "1.1.4",
+		"@capacitor/keyboard": "1.2.3",
+		"@capacitor/status-bar": "1.0.8",
+		"@ionic/vue": "^6.0.0",
+		"@ionic/vue-router": "^6.0.0",
+		"core-js": "^3.6.5",
+		"vue": "^3.2.21",
+		"vue-router": "^4.0.12"
+	},
+	"devDependencies": {
+		"@capacitor/cli": "3.6.0",
+		"@typescript-eslint/eslint-plugin": "^5.6.0",
+		"@typescript-eslint/parser": "^5.6.0",
+		"@vitejs/plugin-vue": "^2.3.3",
+		"@vue/test-utils": "^2.0.0",
+		"autoprefixer": "^10.4.7",
+		"cypress": "^8.7.0",
+		"eslint": "^8.4.1",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-vue": "^8.2.0",
+		"postcss": "^8.4.14",
+		"prettier": "^2.7.1",
+		"tailwindcss": "^3.1.4",
+		"typescript": "^4.3.5",
+		"vite": "^2.9.13",
+		"vite-plugin-eslint": "^1.6.1",
+		"vitest": "^0.17.0",
+		"vue-tsc": "^0.38.2"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead",
+		"not ie 11"
+	],
+	"prettier": {
+		"printWidth": 100,
+		"endOfLine": "lf",
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true,
+		"trailingComma": "all",
+		"jsxBracketSameLine": true,
+		"arrowParens": "always"
+	}
 }
