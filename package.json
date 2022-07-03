@@ -17,9 +17,9 @@
 		"@capacitor/status-bar": "1.0.8",
 		"@ionic/vue": "^6.0.0",
 		"@ionic/vue-router": "^6.0.0",
+		"amplitudejs": "^5.3.2",
 		"core-js": "^3.6.5",
 		"pinia": "^2.0.14",
-		"plyr": "^3.7.2",
 		"vue": "^3.2.21",
 		"vue-router": "^4.0.12"
 	},
