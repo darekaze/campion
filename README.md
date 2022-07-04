@@ -22,3 +22,6 @@ Ref projects
 
 - [Vue Music UI](https://github.com/qier222/YesPlayMusic/)
 - [PWA Music app](https://playlist.iondrimbafilho.me)
+- https://github.com/coderonfleek/umusic
+
+Use AmplituteJS as main player
