@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 // TODO: use Pinia to define player state
-// Init amplify here?
+// Think of a way to generate audio tag
 // Handle media session API here?
 
 export const usePlayerState = defineStore('player', {
@@ -9,13 +9,20 @@ export const usePlayerState = defineStore('player', {
 		/** @type {{ text: string, id: number, isFinished: boolean }[]} */
 		playlist: [],
 		/** @type {'all' | 'finished' | 'unfinished'} */
-		filter: 'all',
-		// type will be automatically inferred to number
-		nextId: 0,
+		state: 'all',
 	}),
 	actions: {
-		increment() {
-			this.nextId++
+		play() {
+			console.log('play')
+		},
+		pause() {
+			console.log('pause')
+		},
+		next() {
+			console.log('next')
+		},
+		prev() {
+			console.log('previous')
 		},
 	},
 })
