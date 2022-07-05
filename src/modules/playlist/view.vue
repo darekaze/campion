@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonFooter } from '@ionic/vue'
 import ListItem from './list-item.vue'
+import PlayerTab from '@/modules/player/player-tab.vue'
 import { getSongs } from '@/data/songs'
 
 const songs = getSongs()
@@ -22,15 +23,12 @@ const songs = getSongs()
 			</ion-header>
 
 			<ion-list>
-				<list-item v-for="song in songs" :key="song.id" :song="song" />
+				<list-item v-for="song in songs" :key="song.artist + song.name" :song="song" />
 			</ion-list>
 		</ion-content>
 
 		<ion-footer>
-			<ion-toolbar class="h-20">
-				<!-- TODO: music player control -->
-				<ion-title>MUSIC PLAYER HERE</ion-title>
-			</ion-toolbar>
+			<player-tab />
 		</ion-footer>
 	</ion-page>
 </template>
