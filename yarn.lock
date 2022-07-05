@@ -604,11 +604,6 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amplitudejs@^5.3.2:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/amplitudejs/-/amplitudejs-5.3.2.tgz#e51cb5507d9ce30b3881f0f89e4342add4c8fa84"
-  integrity sha512-aRZqYMzRuZQ0Ua3ZtK5CTECE958meBfwzXZcx2Hn1itu2KwIB8giwsAPW52um0teewYBXZ5aTzy/wxy3E34e0g==
-
 ansi-colors@^4.1.1:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.3.tgz#37611340eb2243e70cc604cad35d63270d48781b"
