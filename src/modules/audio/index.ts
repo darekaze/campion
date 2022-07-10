@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getSongs, ITrack } from '@/data/songs'
+import { formatSongTime } from '@/utils/second-format'
 
 export const useAudioState = defineStore('player', {
 	state: () => {
@@ -29,6 +30,8 @@ export const useAudioState = defineStore('player', {
 	},
 	getters: {
 		currentTrack: ({ playlist, currentIndex }) => playlist[currentIndex],
+		formattedCurrentTime: ({ currentTime }) => formatSongTime(currentTime),
+		formattedDuration: ({ duration }) => formatSongTime(duration),
 	},
 	actions: {
 		async play() {
@@ -74,6 +77,10 @@ export const useAudioState = defineStore('player', {
 
 			this.setTrack(track, index)
 			this.play()
+		},
+		seekTo(sec: number) {
+			this._audio.currentTime = sec
+			this.currentTime = sec
 		},
 		// LATER: setPlaylist for multiple playlist (recent, favorite...)
 		// LATER: addTrack(track) {}

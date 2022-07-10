@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-	appId: 'com.doyanrebahan.music',
-	appName: 'kunci-music-app',
+	appId: 'dev.darekaze.bc',
+	appName: 'ionic-music-app',
 	webDir: 'dist',
 	bundledWebRuntime: false,
 }

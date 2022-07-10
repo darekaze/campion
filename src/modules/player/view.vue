@@ -1,28 +1,45 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import {
 	IonBackButton,
 	IonButtons,
+	IonButton,
 	IonContent,
 	IonHeader,
 	IonIcon,
 	IonPage,
 	IonToolbar,
-	IonThumbnail,
+	IonLabel,
+	IonRange,
 } from '@ionic/vue'
 import { playCircle, pauseCircle, playSkipBack, playSkipForward } from 'ionicons/icons'
 import { useAudioState } from '@/modules/audio'
 
 const player = useAudioState()
 const { currentTime, duration } = storeToRefs(player)
+const status = reactive({
+	sync: true,
+	lastValue: 0,
+})
 
 const onPlayPressed = () => {
 	player.playing ? player.pause() : player.play()
 }
 
-const seekTo = () => {
-	// call seek
+const onFocus = () => {
+	status.lastValue = currentTime.value
+	status.sync = false
+}
+
+const onChange = ({ detail }: any) => {
+	if (status.sync) return
+	status.lastValue = detail.value
+}
+
+const seekTo = ({ detail }: any) => {
+	player.seekTo(detail.value)
+	status.sync = true
 }
 </script>
 
@@ -36,69 +53,56 @@ const seekTo = () => {
 			</ion-toolbar>
 		</ion-header>
 
-		<ion-content :fullscreen="true" :scroll-y="false">
-			<ion-thumbnail>
+		<ion-content :fullscreen="true" :scroll-y="false" class="text-center">
+			<div class="flex justify-center h-80 py-10">
 				<img :src="player.currentTrack.artwork_url" />
-			</ion-thumbnail>
-
-			<div class="song-title-artist">
-				<div class="song-title">{{ player.currentTrack.title }}</div>
-				<div class="artist-name">{{ player.currentTrack.artist }}</div>
 			</div>
 
-			<div class="song-timeline">
-				<ion-range mode="md" v-model="currentTime" :max="duration" @ionKnobMoveEnd="seekTo">
-					<h5 slot="start">{{ currentTime }}</h5>
-					<h5 slot="end">{{ duration }}</h5>
-				</ion-range>
+			<ion-label class="text-center">
+				<h2 class="song-title">{{ player.currentTrack.title }}</h2>
+				<h3 class="artist-name">{{ player.currentTrack.artist }}</h3>
+			</ion-label>
 
-				<!-- <div class="song-timeline-minutes">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="2" class="song-timer">
-								{{ songCurrentTime }}
-							</ion-col>
+			<div class="w-11/12 mx-auto">
+				<ion-range
+					mode="md"
+					:value="status.sync ? currentTime : status.lastValue"
+					:max="duration"
+					@ionChange="onChange"
+					@ionKnobMoveStart="onFocus"
+					@ionKnobMoveEnd="seekTo"
+					class="pb-0"
+				/>
 
-							<ion-col size="2" offset="8" class="song-timer ion-text-end">
-								{{ songDuration }}
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div> -->
+				<ion-grid class="py-0">
+					<ion-row>
+						<ion-col size="2" class="py-0 text-left text-sm">
+							{{ player.formattedCurrentTime }}
+						</ion-col>
+						<ion-col size="2" offset="8" class="py-0 text-end text-sm">
+							{{ player.formattedDuration }}
+						</ion-col>
+					</ion-row>
+				</ion-grid>
 			</div>
 
-			<div class="flex justify-center">
-				<ion-buttons slot="secondary">
-					<ion-button @click="() => player.skipTrack(false)">
-						<ion-icon slot="icon-only" :icon="playSkipBack" />
-					</ion-button>
-					<ion-button @click="onPlayPressed">
-						<ion-icon v-if="player.playing" slot="icon-only" :icon="pauseCircle" />
-						<ion-icon v-else slot="icon-only" :icon="playCircle" />
-					</ion-button>
-					<ion-button @click="player.skipTrack">
-						<ion-icon slot="icon-only" :icon="playSkipForward" />
-					</ion-button>
-				</ion-buttons>
+			<div class="flex justify-center py-5">
+				<ion-button size="large" fill="clear" @click="() => player.skipTrack(false)">
+					<ion-icon slot="icon-only" :icon="playSkipBack" />
+				</ion-button>
+				<ion-button size="large" fill="clear" @click="onPlayPressed">
+					<ion-icon v-if="player.playing" slot="icon-only" :icon="pauseCircle" />
+					<ion-icon v-else slot="icon-only" :icon="playCircle" />
+				</ion-button>
+				<ion-button size="large" fill="clear" @click="player.skipTrack">
+					<ion-icon slot="icon-only" :icon="playSkipForward" />
+				</ion-button>
 			</div>
 		</ion-content>
 	</ion-page>
 </template>
 
 <style scoped>
-.music-art {
-	width: 80%;
-	margin-top: 20px;
-	margin-right: auto;
-	margin-left: auto;
-	height: 300px;
-}
-
-.song-title-artist {
-	text-align: center;
-	margin-top: 10px;
-}
-
 .song-title {
 	font-size: 1.2em;
 	font-weight: bold;
@@ -108,34 +112,5 @@ const seekTo = () => {
 .artist-name {
 	font-size: 0.9em;
 	margin-top: 5px;
-}
-
-.song-timeline {
-	width: 90%;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.song-timeline-minutes {
-	margin-top: -25px;
-}
-
-.song-timer {
-	font-size: 0.8em;
-}
-
-.player-controls {
-	width: 50%;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.play-button {
-	font-size: 86px;
-	margin-top: -30px;
-}
-
-.play-control {
-	font-size: 24px;
 }
 </style>

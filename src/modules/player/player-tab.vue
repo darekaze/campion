@@ -23,7 +23,7 @@ const onPressed = () => {
 </script>
 
 <template>
-	<ion-toolbar class="flex items-center" @click="onPressed">
+	<ion-toolbar class="flex items-center toolbar" @click="onPressed">
 		<ion-thumbnail slot="start" class="thumb my-2 mr-2">
 			<img :src="player.currentTrack.artwork_url" />
 		</ion-thumbnail>
@@ -44,6 +44,10 @@ const onPressed = () => {
 </template>
 
 <style scoped>
+.toolbar {
+	--padding-start: 1rem;
+	--padding-end: 1rem;
+}
 .thumb {
 	--border-radius: 0.25rem;
 }
