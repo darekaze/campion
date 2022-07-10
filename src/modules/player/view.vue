@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import {
 	IonBackButton,
 	IonButtons,
 	IonContent,
 	IonHeader,
 	IonIcon,
-	IonItem,
-	IonLabel,
-	IonNote,
 	IonPage,
 	IonToolbar,
+	IonThumbnail,
 } from '@ionic/vue'
-import { personCircle } from 'ionicons/icons'
-import { getSong } from '@/data/songs'
+import { playCircle, pauseCircle, playSkipBack, playSkipForward } from 'ionicons/icons'
+import { useAudioState } from '@/modules/audio'
 
-const message = getSong('Anthem')
+const player = useAudioState()
+const { currentTime, duration } = storeToRefs(player)
 
-const getBackButtonText = () => {
-	const win = window as any
-	const mode = win && win.Ionic && win.Ionic.mode
-	return mode === 'ios' ? 'Inbox' : ''
+const onPlayPressed = () => {
+	player.playing ? player.pause() : player.play()
+}
+
+const seekTo = () => {
+	// call seek
 }
 </script>
 
@@ -28,68 +31,111 @@ const getBackButtonText = () => {
 		<ion-header :translucent="true">
 			<ion-toolbar>
 				<ion-buttons slot="start">
-					<ion-back-button :text="getBackButtonText()" default-href="/"></ion-back-button>
+					<ion-back-button text="Playlist" default-href="/"></ion-back-button>
 				</ion-buttons>
 			</ion-toolbar>
 		</ion-header>
 
-		<ion-content :fullscreen="true" v-if="message">
-			<ion-item>
-				<ion-icon :icon="personCircle" color="primary"></ion-icon>
-				<ion-label class="ion-text-wrap">
-					<h2>
-						{{ message.title }}
-					</h2>
-					<h3>To: <ion-note>Me</ion-note></h3>
-				</ion-label>
-			</ion-item>
+		<ion-content :fullscreen="true" :scroll-y="false">
+			<ion-thumbnail>
+				<img :src="player.currentTrack.artwork_url" />
+			</ion-thumbnail>
 
-			<div class="ion-padding">
-				<h1>{{ message.album }}</h1>
+			<div class="song-title-artist">
+				<div class="song-title">{{ player.currentTrack.title }}</div>
+				<div class="artist-name">{{ player.currentTrack.artist }}</div>
+			</div>
+
+			<div class="song-timeline">
+				<ion-range mode="md" v-model="currentTime" :max="duration" @ionKnobMoveEnd="seekTo">
+					<h5 slot="start">{{ currentTime }}</h5>
+					<h5 slot="end">{{ duration }}</h5>
+				</ion-range>
+
+				<!-- <div class="song-timeline-minutes">
+					<ion-grid>
+						<ion-row>
+							<ion-col size="2" class="song-timer">
+								{{ songCurrentTime }}
+							</ion-col>
+
+							<ion-col size="2" offset="8" class="song-timer ion-text-end">
+								{{ songDuration }}
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div> -->
+			</div>
+
+			<div class="flex justify-center">
+				<ion-buttons slot="secondary">
+					<ion-button @click="() => player.skipTrack(false)">
+						<ion-icon slot="icon-only" :icon="playSkipBack" />
+					</ion-button>
+					<ion-button @click="onPlayPressed">
+						<ion-icon v-if="player.playing" slot="icon-only" :icon="pauseCircle" />
+						<ion-icon v-else slot="icon-only" :icon="playCircle" />
+					</ion-button>
+					<ion-button @click="player.skipTrack">
+						<ion-icon slot="icon-only" :icon="playSkipForward" />
+					</ion-button>
+				</ion-buttons>
 			</div>
 		</ion-content>
 	</ion-page>
 </template>
 
 <style scoped>
-ion-item {
-	--inner-padding-end: 0;
-	--background: transparent;
+.music-art {
+	width: 80%;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-left: auto;
+	height: 300px;
 }
 
-ion-label {
-	margin-top: 12px;
-	margin-bottom: 12px;
+.song-title-artist {
+	text-align: center;
+	margin-top: 10px;
 }
 
-ion-item h2 {
-	font-weight: 600;
-}
-
-ion-item .date {
-	float: right;
-	align-items: center;
-	display: flex;
-}
-
-ion-item ion-icon {
-	font-size: 42px;
-	margin-right: 8px;
-}
-
-ion-item ion-note {
-	font-size: 15px;
-	margin-right: 12px;
-	font-weight: normal;
-}
-
-h1 {
-	margin: 0;
+.song-title {
+	font-size: 1.2em;
 	font-weight: bold;
-	font-size: 22px;
+	font-family: Arial;
 }
 
-p {
-	line-height: 22px;
+.artist-name {
+	font-size: 0.9em;
+	margin-top: 5px;
+}
+
+.song-timeline {
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.song-timeline-minutes {
+	margin-top: -25px;
+}
+
+.song-timer {
+	font-size: 0.8em;
+}
+
+.player-controls {
+	width: 50%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.play-button {
+	font-size: 86px;
+	margin-top: -30px;
+}
+
+.play-control {
+	font-size: 24px;
 }
 </style>

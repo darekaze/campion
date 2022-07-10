@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { IonItem, IonThumbnail, IonLabel } from '@ionic/vue'
+import { IonItem, IonThumbnail, IonLabel, IonImg } from '@ionic/vue'
 import { useAudioState } from '@/modules/audio'
 import type { ITrack } from '@/data/songs'
 
@@ -21,7 +21,7 @@ const onPressed = () => {
 <template>
 	<ion-item button @click="onPressed" :detail="false" class="item" lines="none">
 		<ion-thumbnail slot="start" class="thumb">
-			<img :src="track.artwork_url" />
+			<ion-img :src="track.artwork_url" />
 		</ion-thumbnail>
 		<ion-label>
 			<h2>{{ track.title }}</h2>

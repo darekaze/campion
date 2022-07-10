@@ -12,10 +12,10 @@ export const useAudioState = defineStore('player', {
 
 		_audio.preload = 'auto'
 		_audio.addEventListener('timeupdate', () => {
-			currentTime.value = _audio.currentTime
+			currentTime.value = Math.floor(_audio.currentTime)
 		})
 		_audio.addEventListener('durationchange', () => {
-			duration.value = _audio.duration
+			duration.value = Math.floor(_audio.duration)
 		})
 
 		return {

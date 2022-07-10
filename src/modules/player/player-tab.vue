@@ -33,7 +33,8 @@ const onPressed = () => {
 		</ion-label>
 		<ion-buttons slot="end">
 			<ion-button color="dark" @click="onPlayPressed">
-				<ion-icon slot="icon-only" :icon="player.playing ? pause : play" />
+				<ion-icon slot="icon-only" v-if="player.playing" :icon="pause" />
+				<ion-icon slot="icon-only" v-else :icon="play" />
 			</ion-button>
 			<ion-button color="dark" @click="onSkipPressed">
 				<ion-icon slot="icon-only" :icon="playForward" />
