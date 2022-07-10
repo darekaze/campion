@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
 	},
 	{
 		path: '/player',
+		name: 'Player',
 		component: PlayerPage,
 	},
 ]
