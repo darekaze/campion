@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonFooter } from '@ionic/vue'
+import {
+	IonPage,
+	IonHeader,
+	IonToolbar,
+	IonTitle,
+	IonContent,
+	IonList,
+	IonFooter,
+} from '@ionic/vue'
 import ListItem from './list-item.vue'
 import PlayerTab from '@/modules/player/player-tab.vue'
 import { getSongs } from '@/data/songs'
@@ -23,7 +31,12 @@ const songs = getSongs()
 			</ion-header>
 
 			<ion-list>
-				<list-item v-for="song in songs" :key="song.artist + song.name" :song="song" />
+				<list-item
+					v-for="(track, index) in songs"
+					:key="track.artist + track.title"
+					:track="track"
+					:index="index"
+				/>
 			</ion-list>
 		</ion-content>
 

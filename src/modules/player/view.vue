@@ -38,7 +38,7 @@ const getBackButtonText = () => {
 				<ion-icon :icon="personCircle" color="primary"></ion-icon>
 				<ion-label class="ion-text-wrap">
 					<h2>
-						{{ message.name }}
+						{{ message.title }}
 					</h2>
 					<h3>To: <ion-note>Me</ion-note></h3>
 				</ion-label>

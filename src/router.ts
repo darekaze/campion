@@ -6,6 +6,10 @@ import PlayerPage from './modules/player/view.vue'
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
+		redirect: '/home',
+	},
+	{
+		path: '/home',
 		name: 'Home',
 		component: PlaylistPage,
 	},

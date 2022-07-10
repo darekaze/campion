@@ -1,23 +1,31 @@
 <script setup lang="ts">
-import { Song } from '@/data/songs'
+import { useRouter } from 'vue-router'
 import { IonItem, IonThumbnail, IonLabel } from '@ionic/vue'
+import { useAudioState } from '@/modules/audio'
+import type { ITrack } from '@/data/songs'
 
-const props = defineProps<{ song: Song }>()
+const router = useRouter()
+const player = useAudioState()
+const props = defineProps<{ track: ITrack; index: number }>()
 
 const onPressed = () => {
-	// TODO: OnClick Play music, if active go to player
-	console.log(`Clicked on ${props.song.name}`)
+	if (player.currentTrack?.url === props.track.url) {
+		router.push('/player')
+	} else {
+		player.setTrack(props.index)
+		player.play()
+	}
 }
 </script>
 
 <template>
 	<ion-item button @click="onPressed" :detail="false" class="item" lines="none">
 		<ion-thumbnail slot="start" class="thumb">
-			<img :src="song.cover_art_url" />
+			<img :src="track.artwork_url" />
 		</ion-thumbnail>
 		<ion-label>
-			<h2>{{ song.name }}</h2>
-			<p>{{ song.artist }}</p>
+			<h2>{{ track.title }}</h2>
+			<p>{{ track.artist }}</p>
 		</ion-label>
 	</ion-item>
 </template>
