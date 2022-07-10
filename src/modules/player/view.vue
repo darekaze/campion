@@ -59,8 +59,10 @@ const seekTo = ({ detail }: any) => {
 			</div>
 
 			<ion-label class="text-center">
-				<h2 class="song-title">{{ player.currentTrack.title }}</h2>
-				<h3 class="artist-name">{{ player.currentTrack.artist }}</h3>
+				<h2>
+					<strong>{{ player.currentTrack.title }}</strong>
+				</h2>
+				<h3>{{ player.currentTrack.artist }}</h3>
 			</ion-label>
 
 			<div class="w-11/12 mx-auto">
@@ -101,16 +103,3 @@ const seekTo = ({ detail }: any) => {
 		</ion-content>
 	</ion-page>
 </template>
-
-<style scoped>
-.song-title {
-	font-size: 1.2em;
-	font-weight: bold;
-	font-family: Arial;
-}
-
-.artist-name {
-	font-size: 0.9em;
-	margin-top: 5px;
-}
-</style>
