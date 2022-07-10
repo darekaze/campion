@@ -1,13 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useStorage } from '@vueuse/core'
 import { getSongs, ITrack } from '@/data/songs'
 import { formatSongTime } from '@/utils/second-format'
 
 export const useAudioState = defineStore('player', {
 	state: () => {
-		const playlist = getSongs()
+		const playlist = useStorage('playlist', getSongs())
+		const currentIndex = useStorage('currentIndex', 0)
+		const track = playlist.value[currentIndex.value]
 
-		const _audio = new Audio(playlist[0]?.url)
+		const _audio = new Audio(track?.url)
 		const currentTime = ref(0)
 		const duration = ref(0)
 
@@ -18,13 +21,22 @@ export const useAudioState = defineStore('player', {
 		_audio.addEventListener('durationchange', () => {
 			duration.value = Math.floor(_audio.duration)
 		})
+		if (window.navigator.mediaSession && track) {
+			const { title, artist, album, artwork_url } = track
+			window.navigator.mediaSession.metadata = new MediaMetadata({
+				title,
+				artist,
+				album,
+				artwork: [{ src: artwork_url, sizes: '512x512', type: 'image/jpg' }],
+			})
+		}
 
 		return {
 			_audio,
 			playlist,
 			duration,
 			currentTime,
-			currentIndex: 0,
+			currentIndex,
 			playing: false,
 		}
 	},
