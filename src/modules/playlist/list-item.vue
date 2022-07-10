@@ -12,7 +12,7 @@ const onPressed = () => {
 	if (player.currentTrack?.url === props.track.url) {
 		router.push('/player')
 	} else {
-		player.setTrack(props.index)
+		player.setTrack(props.track, props.index)
 		player.play()
 	}
 }

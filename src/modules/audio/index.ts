@@ -4,7 +4,9 @@ import { getSongs, ITrack } from '@/data/songs'
 
 export const useAudioState = defineStore('player', {
 	state: () => {
-		const _audio = new Audio()
+		const playlist = getSongs()
+
+		const _audio = new Audio(playlist[0]?.url)
 		const currentTime = ref(0)
 		const duration = ref(0)
 
@@ -18,9 +20,9 @@ export const useAudioState = defineStore('player', {
 
 		return {
 			_audio,
+			playlist,
 			duration,
 			currentTime,
-			playlist: getSongs() as ITrack[], // Temp
 			currentIndex: 0,
 			playing: false,
 		}
@@ -45,12 +47,11 @@ export const useAudioState = defineStore('player', {
 				window.navigator.mediaSession.playbackState = 'paused'
 			}
 		},
-		setTrack(index: number) {
-			const track = this.playlist[index]
-			this.currentIndex = index
+		setTrack(track: ITrack, index: number) {
 			this._audio.src = track?.url
+			this.currentIndex = index
 
-			if (window.navigator.mediaSession && track) {
+			if (window.navigator.mediaSession) {
 				const { title, artist, album, artwork_url } = track
 				window.navigator.mediaSession.metadata = new MediaMetadata({
 					title,
@@ -61,16 +62,21 @@ export const useAudioState = defineStore('player', {
 			}
 		},
 		skipTrack(forward = true) {
-			console.log(`skip track: ${forward ? 'next' : 'prev'}`)
-
-			// LATER: Handle if loop track
 			forward ? (this.currentIndex += 1) : (this.currentIndex -= 1)
+			let index = this.currentIndex
+			let track = this.playlist[index]
 
-			this.setTrack(this.currentIndex)
+			// Handle loop playing
+			if (!track) {
+				index = forward ? 0 : this.playlist.length - 1
+				track = this.playlist[index]
+			}
+
+			this.setTrack(track, index)
 			this.play()
 		},
-		// LATER: addTrack(track) {}
 		// LATER: setPlaylist for multiple playlist (recent, favorite...)
+		// LATER: addTrack(track) {}
 	},
 })
 
