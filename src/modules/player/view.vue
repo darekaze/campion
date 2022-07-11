@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, reactive } from 'vue'
+import { play, pause, playBack, playForward } from 'ionicons/icons'
 import {
+	IonTitle,
 	IonBackButton,
 	IonButtons,
 	IonButton,
@@ -13,32 +14,41 @@ import {
 	IonLabel,
 	IonRange,
 } from '@ionic/vue'
-import { playCircle, pauseCircle, playSkipBack, playSkipForward } from 'ionicons/icons'
+import type {
+	IonRangeCustomEvent,
+	RangeChangeEventDetail,
+	RangeKnobMoveEndEventDetail,
+} from '@ionic/core'
+
 import { useAudioState } from '@/modules/audio'
+import { formatSongTime } from '@/utils/second-format'
 
 const player = useAudioState()
-const { currentTime, duration } = storeToRefs(player)
 const status = reactive({
 	sync: true,
 	lastValue: 0,
 })
+
+const formattedCurrentTime = computed(() =>
+	status.sync ? player.formattedCurrentTime : formatSongTime(status.lastValue),
+)
 
 const onPlayPressed = () => {
 	player.playing ? player.pause() : player.play()
 }
 
 const onFocus = () => {
-	status.lastValue = currentTime.value
+	status.lastValue = player.currentTime
 	status.sync = false
 }
 
-const onChange = ({ detail }: any) => {
+const onChange = ({ detail }: IonRangeCustomEvent<RangeChangeEventDetail>) => {
 	if (status.sync) return
-	status.lastValue = detail.value
+	status.lastValue = detail.value as number
 }
 
-const seekTo = ({ detail }: any) => {
-	player.seekTo(detail.value)
+const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) => {
+	player.seekTo(detail.value as number)
 	status.sync = true
 }
 </script>
@@ -48,17 +58,18 @@ const seekTo = ({ detail }: any) => {
 		<ion-header :translucent="true">
 			<ion-toolbar>
 				<ion-buttons slot="start">
-					<ion-back-button text="Playlist" default-href="/"></ion-back-button>
+					<ion-back-button text="Home" default-href="/"></ion-back-button>
 				</ion-buttons>
+				<ion-title class="text-sm">PLAYING</ion-title>
 			</ion-toolbar>
 		</ion-header>
 
-		<ion-content :fullscreen="true" :scroll-y="false" class="text-center">
-			<div class="flex justify-center h-80 py-10">
+		<ion-content :scroll-y="false">
+			<div class="flex justify-center h-80">
 				<img :src="player.currentTrack.artwork_url" />
 			</div>
 
-			<ion-label class="text-center">
+			<ion-label class="text-center py-5">
 				<h2>
 					<strong>{{ player.currentTrack.title }}</strong>
 				</h2>
@@ -68,39 +79,39 @@ const seekTo = ({ detail }: any) => {
 			<div class="w-11/12 mx-auto">
 				<ion-range
 					mode="md"
-					:value="status.sync ? currentTime : status.lastValue"
-					:max="duration"
+					:value="status.sync ? player.currentTime : status.lastValue"
+					:max="player.duration"
 					@ionChange="onChange"
 					@ionKnobMoveStart="onFocus"
 					@ionKnobMoveEnd="seekTo"
 					class="pb-0"
 				/>
-
-				<!-- Weird, this does not work on mobile... just use flex -->
-				<ion-grid class="py-0">
-					<ion-row>
-						<ion-col size="2" class="py-0 text-left text-sm">
-							{{ player.formattedCurrentTime }}
-						</ion-col>
-						<ion-col size="2" offset="8" class="py-0 text-end text-sm">
-							{{ player.formattedDuration }}
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+				<div class="flex justify-between mx-2">
+					<p class="text-sm">{{ formattedCurrentTime }}</p>
+					<p class="text-sm">{{ player.formattedDuration }}</p>
+				</div>
 			</div>
 
 			<div class="flex justify-center py-5">
 				<ion-button size="large" fill="clear" @click="() => player.skipTrack(false)">
-					<ion-icon slot="icon-only" :icon="playSkipBack" />
+					<ion-icon slot="icon-only" :icon="playBack" />
 				</ion-button>
 				<ion-button size="large" fill="clear" @click="onPlayPressed">
-					<ion-icon v-if="player.playing" slot="icon-only" :icon="pauseCircle" />
-					<ion-icon v-else slot="icon-only" :icon="playCircle" />
+					<ion-icon v-if="player.playing" slot="icon-only" :icon="pause" />
+					<ion-icon v-else slot="icon-only" :icon="play" />
 				</ion-button>
 				<ion-button size="large" fill="clear" @click="player.skipTrack">
-					<ion-icon slot="icon-only" :icon="playSkipForward" />
+					<ion-icon slot="icon-only" :icon="playForward" />
 				</ion-button>
 			</div>
 		</ion-content>
 	</ion-page>
 </template>
+
+<style scoped>
+ion-content::part(scroll) {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+</style>

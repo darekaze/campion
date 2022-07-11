@@ -1,6 +1,5 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
+import { useStorage, useMediaControls, useEventListener } from '@vueuse/core'
 import { getSongs, ITrack } from '@/data/songs'
 import { formatSongTime } from '@/utils/second-format'
 
@@ -11,16 +10,10 @@ export const useAudioState = defineStore('player', {
 		const track = playlist.value[currentIndex.value]
 
 		const _audio = new Audio(track?.url)
-		const currentTime = ref(0)
-		const duration = ref(0)
-
 		_audio.preload = 'auto'
-		_audio.addEventListener('timeupdate', () => {
-			currentTime.value = Math.floor(_audio.currentTime)
-		})
-		_audio.addEventListener('durationchange', () => {
-			duration.value = Math.floor(_audio.duration)
-		})
+
+		const { playing, currentTime, duration } = useMediaControls(_audio)
+
 		if (window.navigator.mediaSession && track) {
 			const { title, artist, album, artwork_url } = track
 			window.navigator.mediaSession.metadata = new MediaMetadata({
@@ -33,11 +26,11 @@ export const useAudioState = defineStore('player', {
 
 		return {
 			_audio,
-			playlist,
+			playing,
 			duration,
 			currentTime,
+			playlist,
 			currentIndex,
-			playing: false,
 		}
 	},
 	getters: {
@@ -46,18 +39,16 @@ export const useAudioState = defineStore('player', {
 		formattedDuration: ({ duration }) => formatSongTime(duration),
 	},
 	actions: {
-		async play() {
+		play() {
 			if (!this._audio.src) return
 
-			await this._audio.play()
-			this.playing = true
+			this._audio.play()
 			if (window.navigator.mediaSession) {
 				window.navigator.mediaSession.playbackState = 'playing'
 			}
 		},
 		pause() {
 			this._audio.pause()
-			this.playing = false
 			if (window.navigator.mediaSession) {
 				window.navigator.mediaSession.playbackState = 'paused'
 			}
@@ -91,9 +82,9 @@ export const useAudioState = defineStore('player', {
 			this.play()
 		},
 		seekTo(sec: number) {
-			this._audio.currentTime = sec
 			this.currentTime = sec
 		},
+		// LATER: split playlist as a state
 		// LATER: setPlaylist for multiple playlist (recent, favorite...)
 		// LATER: addTrack(track) {}
 	},
@@ -102,7 +93,7 @@ export const useAudioState = defineStore('player', {
 export const initAudioHandler = () => {
 	const player = useAudioState()
 
-	player._audio.addEventListener('ended', () => {
+	useEventListener(player._audio, 'ended', () => {
 		player.skipTrack()
 	})
 

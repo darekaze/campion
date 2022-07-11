@@ -9,9 +9,7 @@ const router = useRouter()
 const player = useAudioState()
 const props = defineProps<{ track: ITrack; index: number }>()
 
-const isActive = computed(() => {
-	return props.track.url === player.currentTrack.url
-})
+const isActive = computed(() => props.track.url === player.currentTrack.url)
 
 const onPressed = () => {
 	if (player.currentTrack?.url === props.track.url) {
