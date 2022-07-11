@@ -1,0 +1,6 @@
+{
+	"appId": "dev.darekaze.bc",
+	"appName": "ionic-music-app",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

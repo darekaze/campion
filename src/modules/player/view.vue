@@ -76,6 +76,7 @@ const seekTo = ({ detail }: any) => {
 					class="pb-0"
 				/>
 
+				<!-- Weird, this does not work on mobile... just use flex -->
 				<ion-grid class="py-0">
 					<ion-row>
 						<ion-col size="2" class="py-0 text-left text-sm">
