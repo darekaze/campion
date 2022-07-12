@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
 	appId: 'dev.darekaze.bc',
-	appName: 'ionic-music-app',
+	appName: 'campion',
 	webDir: 'dist',
 	bundledWebRuntime: false,
 }

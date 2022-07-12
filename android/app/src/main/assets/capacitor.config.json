@@ -1,6 +1,6 @@
 {
 	"appId": "dev.darekaze.bc",
-	"appName": "ionic-music-app",
+	"appName": "campion",
 	"webDir": "dist",
 	"bundledWebRuntime": false
 }
