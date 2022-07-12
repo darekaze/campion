@@ -1,4 +1,4 @@
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useTitle } from '@vueuse/core'
 import { useAudioState } from '@/modules/audio'
 import type { ITrack } from '@/data/songs'
 
@@ -9,6 +9,8 @@ export const changePlaybackState = (state: 'playing' | 'paused') => {
 }
 
 export const changeMetadata = ({ title, artist, album, artwork_url }: ITrack) => {
+	useTitle(`${artist} - ${title}`, { titleTemplate: '%s | Campion' })
+
 	if (!navigator.mediaSession) return
 
 	navigator.mediaSession.metadata = new MediaMetadata({
