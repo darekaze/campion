@@ -33,9 +33,13 @@ export const initAudioHandler = () => {
 		navigator.mediaSession.setActionHandler('pause', () => player.pause())
 		navigator.mediaSession.setActionHandler('nexttrack', () => player.skipTrack())
 		navigator.mediaSession.setActionHandler('previoustrack', () => player.skipTrack(false))
-		navigator.mediaSession.setActionHandler(
-			'seekto',
-			({ seekTime }) => seekTime && player.seekTo(seekTime),
-		)
+		navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) => {
+			if (!seekTime) return
+
+			player.seekTo(seekTime)
+			navigator.mediaSession.setPositionState({
+				position: player._audio.currentTime,
+			})
+		})
 	}
 }
