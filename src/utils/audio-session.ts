@@ -38,6 +38,8 @@ export const initAudioHandler = () => {
 
 			player.seekTo(seekTime)
 			navigator.mediaSession.setPositionState({
+				duration: player._audio.duration,
+				playbackRate: player._audio.playbackRate,
 				position: player._audio.currentTime,
 			})
 		})
