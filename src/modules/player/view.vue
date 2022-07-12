@@ -65,8 +65,8 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 		</ion-header>
 
 		<ion-content :scroll-y="false">
-			<div class="flex justify-center h-80">
-				<img :src="player.currentTrack.artwork_url" />
+			<div class="flex justify-center">
+				<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" class="w-80" />
 			</div>
 
 			<ion-label class="text-center py-5">
