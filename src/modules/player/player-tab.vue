@@ -25,10 +25,10 @@ const onPressed = () => {
 <template>
 	<ion-toolbar class="flex items-center toolbar" @click="onPressed">
 		<ion-thumbnail slot="start" class="thumb my-2 mr-2">
-			<img :src="player.currentTrack.artwork_url" />
+			<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" />
 		</ion-thumbnail>
 		<ion-label>
-			<h4>{{ player.currentTrack.title }}</h4>
+			<h3>{{ player.currentTrack.title }}</h3>
 			<p>{{ player.currentTrack.artist }}</p>
 		</ion-label>
 		<ion-buttons slot="end">

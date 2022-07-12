@@ -24,7 +24,7 @@ const onPressed = () => {
 <template>
 	<ion-item button @click="onPressed" :detail="false" class="item" lines="none">
 		<ion-thumbnail slot="start" class="thumb">
-			<ion-img :src="track.artwork_url" />
+			<ion-img :src="track.artwork_url" :alt="track.title" />
 		</ion-thumbnail>
 		<ion-label :color="isActive ? 'primary' : 'dark'">
 			<h2>{{ track.title }}</h2>
