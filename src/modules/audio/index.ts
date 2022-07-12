@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useStorage, useMediaControls } from '@vueuse/core'
 import { getSongs, ITrack } from '@/data/songs'
 import { formatSongTime } from '@/utils/second-format'
-import { changePlaybackState, changeMetadata } from '@/utils/audio-session'
+import { updatePlaybackState, updateMetadata } from '@/utils/audio-session'
 
 export const useAudioState = defineStore('player', {
 	state: () => {
@@ -15,7 +15,7 @@ export const useAudioState = defineStore('player', {
 		_audio.value.preload = 'auto'
 
 		const { playing, currentTime, duration } = useMediaControls(_audio)
-		track && changeMetadata(track)
+		track && updateMetadata(track)
 
 		return {
 			_audio,
@@ -33,19 +33,22 @@ export const useAudioState = defineStore('player', {
 	},
 	actions: {
 		play() {
-			if (!this._audio.src) return
-
-			this._audio.play()
-			changePlaybackState('playing')
+			this._audio
+				.play()
+				.then(() => {
+					updatePlaybackState('playing')
+				})
+				.catch(() => null)
 		},
 		pause() {
 			this._audio.pause()
-			changePlaybackState('paused')
+			updatePlaybackState('paused')
 		},
 		setTrack(track: ITrack, index: number) {
-			this._audio.src = track?.url
 			this.currentIndex = index
-			changeMetadata(track)
+
+			this._audio.src = track.url
+			updateMetadata(track)
 		},
 		skipTrack(forward = true) {
 			forward ? (this.currentIndex += 1) : (this.currentIndex -= 1)

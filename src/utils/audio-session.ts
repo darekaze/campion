@@ -2,13 +2,13 @@ import { useEventListener, useTitle } from '@vueuse/core'
 import { useAudioState } from '@/modules/audio'
 import type { ITrack } from '@/data/songs'
 
-export const changePlaybackState = (state: 'playing' | 'paused') => {
+export const updatePlaybackState = (state: 'playing' | 'paused') => {
 	if (!navigator.mediaSession) return
 
 	navigator.mediaSession.playbackState = state
 }
 
-export const changeMetadata = ({ title, artist, album, artwork_url }: ITrack) => {
+export const updateMetadata = ({ title, artist, album, artwork_url }: ITrack) => {
 	useTitle(`${artist} - ${title}`, { titleTemplate: '%s | Campion' })
 
 	if (!navigator.mediaSession) return
@@ -33,15 +33,8 @@ export const initAudioHandler = () => {
 		navigator.mediaSession.setActionHandler('pause', () => player.pause())
 		navigator.mediaSession.setActionHandler('nexttrack', () => player.skipTrack())
 		navigator.mediaSession.setActionHandler('previoustrack', () => player.skipTrack(false))
-		navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) => {
-			if (!seekTime) return
-
-			player.seekTo(seekTime)
-			navigator.mediaSession.setPositionState({
-				duration: player._audio.duration,
-				playbackRate: player._audio.playbackRate,
-				position: player._audio.currentTime,
-			})
-		})
+		navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) =>
+			player.seekTo(seekTime || 0),
+		)
 	}
 }
