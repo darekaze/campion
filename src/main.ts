@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { IonicVue } from '@ionic/vue'
-import { initAudioHandler } from './modules/audio'
+import { initAudioHandler } from './utils/audio-session'
 import App from './App.vue'
 import router from './router'
 
