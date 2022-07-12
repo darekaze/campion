@@ -33,8 +33,9 @@ export const initAudioHandler = () => {
 		navigator.mediaSession.setActionHandler('pause', () => player.pause())
 		navigator.mediaSession.setActionHandler('nexttrack', () => player.skipTrack())
 		navigator.mediaSession.setActionHandler('previoustrack', () => player.skipTrack(false))
-		navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) =>
-			player.seekTo(seekTime || 0),
-		)
+		// Disable for now as it is buggy
+		// navigator.mediaSession.setActionHandler('seekto', ({ seekTime }) => {
+		// 	player.seekTo(seekTime || 0)
+		// })
 	}
 }
