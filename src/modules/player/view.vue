@@ -66,10 +66,10 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 
 		<ion-content :scroll-y="false">
 			<div class="flex justify-center">
-				<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" class="w-80" />
+				<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" class="w-60 rounded-md" />
 			</div>
 
-			<ion-label class="text-center py-5">
+			<ion-label class="text-center pt-6 pb-2">
 				<h2>
 					<strong>{{ player.currentTrack.title }}</strong>
 				</h2>
@@ -92,7 +92,7 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 				</div>
 			</div>
 
-			<div class="flex justify-center py-5">
+			<div class="flex justify-center">
 				<ion-button size="large" fill="clear" @click="() => player.skipTrack(false)">
 					<ion-icon slot="icon-only" :icon="playBack" />
 				</ion-button>
