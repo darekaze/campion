@@ -1,4 +1,4 @@
-package dev.darekaze.bc;
+package dev.darekaze.campion;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,5 +1,5 @@
 {
-	"appId": "dev.darekaze.bc",
+	"appId": "dev.darekaze.campion",
 	"appName": "campion",
 	"webDir": "dist",
 	"bundledWebRuntime": false
