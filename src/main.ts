@@ -17,7 +17,13 @@ import '@ionic/vue/css/structure.css'
 import './styles/variables.css'
 
 const pinia = createPinia()
-const app = createApp(App).use(IonicVue, { mode: 'ios' }).use(pinia).use(router)
+const app = createApp(App)
+	.use(IonicVue, {
+		swipeBackEnabled: false,
+		mode: 'ios',
+	})
+	.use(pinia)
+	.use(router)
 
 initAudioHandler()
 
