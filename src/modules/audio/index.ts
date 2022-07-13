@@ -39,7 +39,6 @@ export const useAudioState = defineStore('player', () => {
 	}
 
 	const startAudio = () => {
-		_audio.pause()
 		_audio.src = currentTrack.value.url
 		_audio
 			.play()
