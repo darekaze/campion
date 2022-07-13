@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useStorage, useMediaControls, useEventListener, useTitle } from '@vueuse/core'
 import { getSongs } from '@/data/songs'
@@ -8,18 +8,18 @@ export const useAudioState = defineStore('player', () => {
 	const currentIndex = useStorage('currentIndex', 0)
 	const currentTrack = computed(() => playlist.value[currentIndex.value])
 
-	const _audio = new Audio()
+	const _audio = ref(new Audio())
 	const { playing, currentTime, duration } = useMediaControls(_audio)
 
 	// utils
 	const updatePositionState = () => {
-		if ('setPositionState' in navigator.mediaSession) {
+		try {
 			navigator.mediaSession.setPositionState({
-				duration: _audio.duration,
-				playbackRate: _audio.playbackRate,
-				position: _audio.currentTime,
+				duration: _audio.value.duration,
+				playbackRate: _audio.value.playbackRate,
+				position: _audio.value.currentTime,
 			})
-		}
+		} catch {}
 	}
 
 	const updateMetadata = () => {
@@ -33,16 +33,17 @@ export const useAudioState = defineStore('player', () => {
 				album,
 				artwork: [{ src: artwork_url, sizes: '512x512', type: 'image/jpg' }],
 			})
-			// Media is loaded, set the duration.
-			updatePositionState()
 		}
 	}
 
 	const startAudio = () => {
-		_audio.src = currentTrack.value.url
-		_audio
+		_audio.value.src = currentTrack.value.url
+		_audio.value
 			.play()
-			.then(() => updateMetadata())
+			.then(() => {
+				updateMetadata()
+				updatePositionState()
+			})
 			.catch(() => null)
 	}
 
@@ -63,7 +64,7 @@ export const useAudioState = defineStore('player', () => {
 
 	// setup
 	if (currentTrack.value) {
-		_audio.src = currentTrack.value?.url
+		_audio.value.src = currentTrack.value.url
 		updateMetadata()
 	}
 
@@ -84,8 +85,8 @@ export const useAudioState = defineStore('player', () => {
 
 		try {
 			navigator.mediaSession.setActionHandler('seekto', ({ fastSeek, seekTime }) => {
-				if (fastSeek && 'fastSeek' in _audio) {
-					_audio.fastSeek(seekTime || 0)
+				if (fastSeek && 'fastSeek' in _audio.value) {
+					_audio.value.fastSeek(seekTime || 0)
 					return
 				}
 				seekTo(seekTime || 0)
