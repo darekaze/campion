@@ -8,7 +8,7 @@ export const useAudioState = defineStore('player', () => {
 	const currentIndex = useStorage('currentIndex', 0)
 	const currentTrack = computed(() => playlist.value[currentIndex.value])
 
-	const _audio = new Audio(currentTrack.value?.url)
+	const _audio = new Audio()
 	const { playing, currentTime, duration } = useMediaControls(_audio)
 
 	// utils
@@ -23,7 +23,7 @@ export const useAudioState = defineStore('player', () => {
 	}
 
 	const updateMetadata = () => {
-		const { title, artist, album, artwork_url } = playlist.value[currentIndex.value]
+		const { title, artist, album, artwork_url } = currentTrack.value
 
 		useTitle(`${artist} - ${title}`, { titleTemplate: '%s | Campion' })
 		if ('mediaSession' in navigator) {
@@ -61,7 +61,12 @@ export const useAudioState = defineStore('player', () => {
 		currentTime.value = sec
 	}
 
-	// setups
+	// setup
+	if (currentTrack.value) {
+		_audio.src = currentTrack.value?.url
+		updateMetadata()
+	}
+
 	useEventListener(_audio, 'ended', () => skipTrack())
 
 	if ('mediaSession' in navigator) {
