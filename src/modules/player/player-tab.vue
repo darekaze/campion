@@ -8,7 +8,7 @@ const router = useRouter()
 const player = useAudioState()
 
 const onPlayPressed = (event: Event) => {
-	player.playing ? player.pause() : player.play()
+	player.playing = !player.playing
 	event.stopPropagation()
 }
 

@@ -1,74 +1,112 @@
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useStorage, useMediaControls } from '@vueuse/core'
-import { getSongs, ITrack } from '@/data/songs'
-import { formatSongTime } from '@/utils/second-format'
-import { updatePlaybackState, updateMetadata } from '@/utils/audio-session'
+import { useStorage, useMediaControls, useEventListener, useTitle } from '@vueuse/core'
+import { getSongs } from '@/data/songs'
 
-export const useAudioState = defineStore('player', {
-	state: () => {
-		const playlist = useStorage('playlist', getSongs())
-		const currentIndex = useStorage('currentIndex', 0)
-		const track = playlist.value[currentIndex.value]
+export const useAudioState = defineStore('player', () => {
+	const playlist = useStorage('playlist', getSongs())
+	const currentIndex = useStorage('currentIndex', 0)
+	const currentTrack = computed(() => playlist.value[currentIndex.value])
 
-		const _audio = ref(new Audio(track?.url))
-		_audio.value.preload = 'auto'
+	const _audio = new Audio(currentTrack.value?.url)
+	const { playing, currentTime, duration } = useMediaControls(_audio)
 
-		const { playing, currentTime, duration } = useMediaControls(_audio)
-		track && updateMetadata(track)
-
-		return {
-			_audio,
-			playing,
-			duration,
-			currentTime,
-			playlist,
-			currentIndex,
+	// utils
+	const updatePositionState = () => {
+		if ('setPositionState' in navigator.mediaSession) {
+			navigator.mediaSession.setPositionState({
+				duration: _audio.duration,
+				playbackRate: _audio.playbackRate,
+				position: _audio.currentTime,
+			})
 		}
-	},
-	getters: {
-		currentTrack: ({ playlist, currentIndex }) => playlist[currentIndex],
-		formattedCurrentTime: ({ currentTime }) => formatSongTime(currentTime),
-		formattedDuration: ({ duration }) => formatSongTime(duration),
-	},
-	actions: {
-		play() {
-			this._audio
-				.play()
-				.then(() => {
-					updatePlaybackState('playing')
-				})
-				.catch(() => null)
-		},
-		pause() {
-			this._audio.pause()
-			updatePlaybackState('paused')
-		},
-		setTrack(track: ITrack, index: number) {
-			this.currentIndex = index
+	}
 
-			this._audio.src = track.url
-			updateMetadata(track)
-		},
-		skipTrack(forward = true) {
-			forward ? (this.currentIndex += 1) : (this.currentIndex -= 1)
-			let index = this.currentIndex
-			let track = this.playlist[index]
+	const updateMetadata = () => {
+		const { title, artist, album, artwork_url } = playlist.value[currentIndex.value]
 
-			// Handle loop playing
-			if (!track) {
-				index = forward ? 0 : this.playlist.length - 1
-				track = this.playlist[index]
-			}
+		useTitle(`${artist} - ${title}`, { titleTemplate: '%s | Campion' })
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title,
+				artist,
+				album,
+				artwork: [{ src: artwork_url, sizes: '512x512', type: 'image/jpg' }],
+			})
+			// Media is loaded, set the duration.
+			updatePositionState()
+		}
+	}
 
-			this.setTrack(track, index)
-			this.play()
-		},
-		seekTo(sec: number) {
-			this.currentTime = sec
-		},
-		// LATER: split playlist as a state
-		// LATER: setPlaylist for multiple playlist (recent, favorite...)
-		// LATER: addTrack(track) {}
-	},
+	const startAudio = () => {
+		_audio.src = currentTrack.value.url
+		_audio
+			.play()
+			.then(() => updateMetadata())
+			.catch(() => null)
+	}
+
+	// actions
+	const setTrack = (index: number) => {
+		currentIndex.value = index
+		startAudio()
+	}
+
+	const skipTrack = (forward = true) => {
+		currentIndex.value = (currentIndex.value + (forward ? 1 : -1)) % playlist.value.length
+		startAudio()
+	}
+
+	const seekTo = (sec: number) => {
+		currentTime.value = sec
+	}
+
+	// setups
+	useEventListener(_audio, 'ended', () => skipTrack())
+
+	if ('mediaSession' in navigator) {
+		useEventListener(_audio, 'play', () => {
+			navigator.mediaSession.playbackState = 'playing'
+		})
+		useEventListener(_audio, 'pause', () => {
+			navigator.mediaSession.playbackState = 'paused'
+		})
+
+		navigator.mediaSession.setActionHandler('play', () => (playing.value = true))
+		navigator.mediaSession.setActionHandler('pause', () => (playing.value = false))
+		navigator.mediaSession.setActionHandler('nexttrack', () => skipTrack())
+		navigator.mediaSession.setActionHandler('previoustrack', () => skipTrack(false))
+
+		try {
+			navigator.mediaSession.setActionHandler('seekto', ({ fastSeek, seekTime }) => {
+				if (fastSeek && 'fastSeek' in _audio) {
+					_audio.fastSeek(seekTime || 0)
+					return
+				}
+				seekTo(seekTime || 0)
+				updatePositionState()
+			})
+		} catch {}
+	}
+
+	// LATER: split playlist as a store
+	// LATER: setPlaylist for multiple playlist (recent, favorite...)
+
+	return {
+		_audio,
+		// audio state
+		playing,
+		duration,
+		currentTime,
+
+		// playlist state
+		playlist,
+		currentIndex,
+		currentTrack,
+
+		// actions
+		setTrack,
+		skipTrack,
+		seekTo,
+	}
 })

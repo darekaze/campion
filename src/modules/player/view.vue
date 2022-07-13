@@ -29,13 +29,10 @@ const status = reactive({
 	lastValue: 0,
 })
 
+const formattedDuration = computed(() => formatSongTime(player.duration))
 const formattedCurrentTime = computed(() =>
-	status.sync ? player.formattedCurrentTime : formatSongTime(status.lastValue),
+	status.sync ? formatSongTime(player.currentTime) : formatSongTime(status.lastValue),
 )
-
-const onPlayPressed = () => {
-	player.playing ? player.pause() : player.play()
-}
 
 const onFocus = () => {
 	status.lastValue = player.currentTime
@@ -66,7 +63,11 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 
 		<ion-content :scroll-y="false">
 			<div class="flex justify-center">
-				<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" class="w-60 rounded-md" />
+				<img
+					:src="player.currentTrack.artwork_url"
+					:alt="player.currentTrack.title"
+					class="w-60 rounded-md"
+				/>
 			</div>
 
 			<ion-label class="text-center pt-6 pb-2">
@@ -88,7 +89,7 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 				/>
 				<div class="flex justify-between mx-2">
 					<p class="text-sm">{{ formattedCurrentTime }}</p>
-					<p class="text-sm">{{ player.formattedDuration }}</p>
+					<p class="text-sm">{{ formattedDuration }}</p>
 				</div>
 			</div>
 
@@ -96,7 +97,7 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 				<ion-button size="large" fill="clear" @click="() => player.skipTrack(false)">
 					<ion-icon slot="icon-only" :icon="playBack" />
 				</ion-button>
-				<ion-button size="large" fill="clear" @click="onPlayPressed">
+				<ion-button size="large" fill="clear" @click="player.playing = !player.playing">
 					<ion-icon v-if="player.playing" slot="icon-only" :icon="pause" />
 					<ion-icon v-else slot="icon-only" :icon="play" />
 				</ion-button>

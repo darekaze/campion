@@ -15,8 +15,8 @@ const onPressed = () => {
 	if (player.currentTrack?.url === props.track.url) {
 		router.push('/player')
 	} else {
-		player.setTrack(props.track, props.index)
-		player.play()
+		// Works only on single playlist
+		player.setTrack(props.index)
 	}
 }
 </script>
