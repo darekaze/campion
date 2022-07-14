@@ -4,6 +4,8 @@ import axios from 'axios'
 export default async (req: VercelRequest, res: VercelResponse) => {
 	const { q = '', t = 't' } = req.query
 
+	if (!q) return res.status(400).json({ error: 'q is not provided!' })
+
 	const { data } = await axios.post(
 		'https://bandcamp.com/api/bcsearch_public_api/1/autocomplete_elastic',
 		{
