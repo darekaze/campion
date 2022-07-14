@@ -13,7 +13,6 @@
 		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
 		"useDefineForClassFields": true,
-		"types": ["vitest/globals"],
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"]
