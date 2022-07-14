@@ -8,12 +8,12 @@ export type ITrack = {
 
 const songs: ITrack[] = [
 	{
-		title: "Risin' High (feat Raashan Ahmad)",
-		artist: 'Ancient Astronauts',
-		album: 'We Are to Answer',
-		url: "https://521dimensions.com/song/Ancient Astronauts - Risin' High (feat Raashan Ahmad).mp3",
+		title: "XTREME",
+		artist: 'USAO',
+		album: 'XTREME',
+		url: "https://t4.bcbits.com/stream/7e37829a8b97434c2f72c2a8dc1cbd24/mp3-128/1043760121?p=0&ts=1657908384&t=d81ed7f7f05191add8eb173b2e138def7f46c6bd&token=1657908384_83ad0d16eaf6fe9fec184ab6308d3aa8662d29d7",
 		artwork_url:
-			'https://521dimensions.com/img/open-source/amplitudejs/album-art/we-are-to-answer.jpg',
+			'https://f4.bcbits.com/img/a3332148673_10.jpg',
 	},
 	{
 		title: 'The Gun',

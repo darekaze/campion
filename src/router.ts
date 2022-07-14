@@ -1,22 +1,41 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 import { RouteRecordRaw } from 'vue-router'
-import PlaylistPage from './modules/playlist/view.vue'
-import PlayerPage from './modules/player/view.vue'
+import TabsPage from './utils/tabs.vue'
 
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/',
-		redirect: '/home',
+		redirect: '/t/playlist',
 	},
 	{
-		path: '/home',
-		name: 'Home',
-		component: PlaylistPage,
+		path: '/t/',
+		component: TabsPage,
+		children: [
+			{
+				path: '',
+				redirect: '/t/playlist',
+			},
+			{
+				path: 'playlist',
+				name: 'Playlist',
+				component: () => import('@/modules/playlist/index.vue'),
+			},
+			{
+				path: 'search',
+				name: 'Search',
+				component: () => import('@/modules/search/index.vue'),
+			},
+			{
+				path: 'recent',
+				name: 'Recent Playlist',
+				component: () => import('@/modules/playlist/recent.vue'),
+			},
+		],
 	},
 	{
 		path: '/player',
 		name: 'Player',
-		component: PlayerPage,
+		component: () => import('@/modules/player/view.vue'),
 	},
 ]
 

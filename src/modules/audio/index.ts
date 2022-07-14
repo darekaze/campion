@@ -4,7 +4,7 @@ import { useStorage, useMediaControls, useEventListener, useTitle } from '@vueus
 import { getSongs } from '@/data/songs'
 
 export const useAudioState = defineStore('player', () => {
-	const playlist = useStorage('playlist', getSongs())
+	const playlist = ref(getSongs())
 	const currentIndex = useStorage('currentIndex', 0)
 	const currentTrack = computed(() => playlist.value[currentIndex.value])
 
