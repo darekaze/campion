@@ -2,8 +2,9 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonItem, IonThumbnail, IonLabel, IonImg } from '@ionic/vue'
-import { useAudioState } from '@/modules/audio'
-import type { ITrack } from '@/data/songs'
+import { useAudioState } from '@/modules/player/store/audio'
+
+import type { ITrack } from '@/utils/initial-data'
 
 const router = useRouter()
 const player = useAudioState()

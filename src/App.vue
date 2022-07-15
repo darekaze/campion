@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { IonApp, IonRouterOutlet } from '@ionic/vue'
+import { useQueryProvider } from 'vue-query'
+
+useQueryProvider()
 </script>
 
 <template>

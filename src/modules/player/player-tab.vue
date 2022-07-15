@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { IonToolbar, IonLabel, IonIcon, IonThumbnail, IonButtons, IonButton } from '@ionic/vue'
 import { play, pause, playForward } from 'ionicons/icons'
-import { useAudioState } from '@/modules/audio'
+import { useAudioState } from './store/audio'
 
 const router = useRouter()
 const player = useAudioState()

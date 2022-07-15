@@ -20,8 +20,8 @@ import type {
 	RangeKnobMoveEndEventDetail,
 } from '@ionic/core'
 
-import { useAudioState } from '@/modules/audio'
 import { formatSongTime } from '@/utils/second-format'
+import { useAudioState } from './store/audio'
 
 const player = useAudioState()
 const status = reactive({

@@ -10,9 +10,9 @@ import {
 } from '@ionic/vue'
 import ListItem from './list-item.vue'
 import PlayerTab from '@/modules/player/player-tab.vue'
-import { getSongs } from '@/data/songs'
 
-const songs = getSongs()
+// TEMP: replace this with playlist store
+import { songs } from '@/utils/initial-data'
 </script>
 
 <template>
