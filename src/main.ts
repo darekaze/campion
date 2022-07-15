@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { IonicVue } from '@ionic/vue'
+import { VueQueryPlugin } from 'vue-query'
 import App from './App.vue'
 import router from './router'
 
@@ -18,6 +19,7 @@ const app = createApp(App)
 		swipeBackEnabled: false,
 		mode: 'ios',
 	})
+	.use(VueQueryPlugin)
 	.use(pinia)
 	.use(router)
 

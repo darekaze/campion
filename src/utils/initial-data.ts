@@ -6,14 +6,13 @@ export type ITrack = {
 	artwork_url: string
 }
 
-const songs: ITrack[] = [
+export const songs: ITrack[] = [
 	{
-		title: "XTREME",
+		title: 'XTREME',
 		artist: 'USAO',
 		album: 'XTREME',
-		url: "https://t4.bcbits.com/stream/7e37829a8b97434c2f72c2a8dc1cbd24/mp3-128/1043760121?p=0&ts=1657908384&t=d81ed7f7f05191add8eb173b2e138def7f46c6bd&token=1657908384_83ad0d16eaf6fe9fec184ab6308d3aa8662d29d7",
-		artwork_url:
-			'https://f4.bcbits.com/img/a3332148673_10.jpg',
+		url: 'https://t4.bcbits.com/stream/7e37829a8b97434c2f72c2a8dc1cbd24/mp3-128/1043760121?p=0&ts=1657908384&t=d81ed7f7f05191add8eb173b2e138def7f46c6bd&token=1657908384_83ad0d16eaf6fe9fec184ab6308d3aa8662d29d7',
+		artwork_url: 'https://f4.bcbits.com/img/a3332148673_10.jpg',
 	},
 	{
 		title: 'The Gun',
@@ -91,7 +90,3 @@ const songs: ITrack[] = [
 			'https://521dimensions.com/img/open-source/amplitudejs/album-art/soon-it-will-be-cold-enough.jpg',
 	},
 ]
-
-export const getSongs = () => songs
-
-export const getSong = (title: string) => songs.find((m) => m.title === title)

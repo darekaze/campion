@@ -1,10 +1,10 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useStorage, useMediaControls, useEventListener, useTitle } from '@vueuse/core'
-import { getSongs } from '@/data/songs'
+import { songs } from '@/utils/initial-data'
 
 export const useAudioState = defineStore('player', () => {
-	const playlist = ref(getSongs())
+	const playlist = useStorage('playlist', songs)
 	const currentIndex = useStorage('currentIndex', 0)
 	const currentTrack = computed(() => playlist.value[currentIndex.value])
 
@@ -94,9 +94,6 @@ export const useAudioState = defineStore('player', () => {
 			})
 		} catch {}
 	}
-
-	// LATER: split playlist as a store
-	// LATER: setPlaylist for multiple playlist (recent, favorite...)
 
 	return {
 		_audio,

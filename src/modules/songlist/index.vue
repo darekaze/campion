@@ -16,9 +16,9 @@ import { library, search, receipt } from 'ionicons/icons'
 		<ion-tabs>
 			<ion-router-outlet></ion-router-outlet>
 			<ion-tab-bar slot="bottom">
-				<ion-tab-button tab="playlist" href="/t/playlist">
+				<ion-tab-button tab="library" href="/t/library">
 					<ion-icon :icon="library" />
-					<ion-label>Playlist</ion-label>
+					<ion-label>Library</ion-label>
 				</ion-tab-button>
 
 				<ion-tab-button tab="search" href="/t/search">
