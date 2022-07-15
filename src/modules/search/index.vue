@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { refDebounced } from '@vueuse/core'
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue'
 import { useSearchQuery } from './hooks'
 
 const input = ref('')
-const q = refDebounced(input, 600)
+const query = refDebounced(input, 600)
 
-const { isLoading, isError, data } = useSearchQuery(q, {
-	enabled: computed(() => !!q.value),
-})
+const { isLoading, isError, data } = useSearchQuery(query)
 </script>
 
 <template>

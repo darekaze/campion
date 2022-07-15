@@ -23,5 +23,14 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 		},
 	)
 
-	return res.status(200).json(data?.auto?.results ?? [])
+	return res.status(200).json(
+		((data?.auto?.results ?? []) as any[]).map((i) => ({
+			id: i.id,
+			art_id: i.art_id,
+			name: i.name,
+			artist: i.band_name,
+			album: i.album_name,
+			url: i.item_url_path,
+		})),
+	)
 }

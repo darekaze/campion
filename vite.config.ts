@@ -11,9 +11,6 @@ export default defineConfig({
 			'@': resolve(__dirname, './src'),
 		},
 	},
-	optimizeDeps: {
-		exclude: ['api']
-	},
 	plugins: [
 		vue(),
 		WindiCSS(),
@@ -46,4 +43,14 @@ export default defineConfig({
 			},
 		}),
 	],
+	// Dev server setting
+	server: {
+		proxy: {
+			'/api': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+			},
+		},
+	},
 })
