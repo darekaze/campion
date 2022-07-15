@@ -8,7 +8,7 @@ import {
 	IonPage,
 	IonRouterOutlet,
 } from '@ionic/vue'
-import { library, search, receipt } from 'ionicons/icons'
+import { musicalNoteOutline, searchOutline, timeOutline } from 'ionicons/icons'
 </script>
 
 <template>
@@ -17,17 +17,17 @@ import { library, search, receipt } from 'ionicons/icons'
 			<ion-router-outlet></ion-router-outlet>
 			<ion-tab-bar slot="bottom">
 				<ion-tab-button tab="library" href="/t/library">
-					<ion-icon :icon="library" />
+					<ion-icon size="small" :icon="musicalNoteOutline" />
 					<ion-label>Library</ion-label>
 				</ion-tab-button>
 
 				<ion-tab-button tab="search" href="/t/search">
-					<ion-icon :icon="search" />
+					<ion-icon size="small" :icon="searchOutline" />
 					<ion-label>Search</ion-label>
 				</ion-tab-button>
 
 				<ion-tab-button tab="recent" href="/t/recent">
-					<ion-icon :icon="receipt" />
+					<ion-icon size="small" :icon="timeOutline" />
 					<ion-label>Recent</ion-label>
 				</ion-tab-button>
 			</ion-tab-bar>
