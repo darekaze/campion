@@ -6,7 +6,7 @@ export type ITrack = {
 	artwork_url: string
 }
 
-export const songs: ITrack[] = [
+const songs: ITrack[] = [
 	{
 		title: 'XTREME',
 		artist: 'USAO',
@@ -90,3 +90,5 @@ export const songs: ITrack[] = [
 			'https://521dimensions.com/img/open-source/amplitudejs/album-art/soon-it-will-be-cold-enough.jpg',
 	},
 ]
+
+export const getSongs = () => songs

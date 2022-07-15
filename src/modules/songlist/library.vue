@@ -12,7 +12,9 @@ import ListItem from './list-item.vue'
 import PlayerTab from '@/modules/player/player-tab.vue'
 
 // TEMP: replace this with playlist store
-import { songs } from '@/utils/initial-data'
+import { getSongs } from '@/utils/initial-data'
+
+const songs = getSongs()
 </script>
 
 <template>
