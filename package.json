@@ -7,7 +7,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc --noEmit && vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"vdev": "vercel dev --local-config ./vercel-dev.json"
 	},
 	"dependencies": {
 		"@capacitor/android": "3.6.0",
