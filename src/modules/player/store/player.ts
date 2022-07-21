@@ -1,15 +1,15 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useStorage, useMediaControls, useEventListener, useTitle } from '@vueuse/core'
-import { getSongs } from '@/utils/initial-data'
+import { useMediaControls, useEventListener, useTitle } from '@vueuse/core'
+import { usePlaylistState } from './playlist'
+import { getImageUrl, fetchStreamUrl } from '@/utils/bandcamp'
 
-export const useAudioState = defineStore('player', () => {
-	const playlist = useStorage('playlist', getSongs())
-	const currentIndex = useStorage('currentIndex', 0)
-	const currentTrack = computed(() => playlist.value[currentIndex.value])
+// LATER: impl. a cache called streamUrlCaches somewhere
 
+export const usePlayerState = defineStore('player', () => {
 	const _audio = ref(new Audio())
-	const { playing, currentTime, duration } = useMediaControls(_audio)
+	const { playing, currentTime, duration, onSourceError } = useMediaControls(_audio)
+	const playlist = usePlaylistState()
 
 	// utils
 	const updatePositionState = () => {
@@ -23,7 +23,7 @@ export const useAudioState = defineStore('player', () => {
 	}
 
 	const updateMetadata = () => {
-		const { title, artist, album, artwork_url } = currentTrack.value
+		const { title, artist, album, art_id } = playlist.currentTrack
 
 		useTitle(`${artist} - ${title}`, { titleTemplate: '%s | Campion' })
 		if ('mediaSession' in navigator) {
@@ -31,30 +31,39 @@ export const useAudioState = defineStore('player', () => {
 				title,
 				artist,
 				album,
-				artwork: [{ src: artwork_url, sizes: '512x512', type: 'image/jpg' }],
+				artwork: [
+					{ src: getImageUrl(art_id, 2), sizes: '256x256', type: 'image/jpg' },
+					{ src: getImageUrl(art_id, 5), sizes: '512x512', type: 'image/jpg' },
+				],
 			})
 		}
 	}
 
-	const startAudio = () => {
-		_audio.value.src = currentTrack.value.url
-		_audio.value
-			.play()
-			.then(() => {
-				updateMetadata()
-				updatePositionState()
-			})
-			.catch(() => null)
+	const initPlayer = async () => {
+		if (!playlist.currentTrack) return
+
+		_audio.value.src = await fetchStreamUrl(playlist.currentTrack.url)
+		updateMetadata()
+	}
+
+	const startAudio = async () => {
+		if (!playlist.currentTrack) return
+		try {
+			_audio.value.src = await fetchStreamUrl(playlist.currentTrack.url)
+			await _audio.value.play()
+			updateMetadata()
+			updatePositionState()
+		} catch {}
 	}
 
 	// actions
-	const setTrack = (index: number) => {
-		currentIndex.value = index
+	const setTrack = (key: string, index: number) => {
+		playlist.$patch({ key, index })
 		startAudio()
 	}
 
 	const skipTrack = (forward = true) => {
-		currentIndex.value = (currentIndex.value + (forward ? 1 : -1)) % playlist.value.length
+		playlist.index = (playlist.index + (forward ? 1 : -1)) % (playlist.currentPlaylist?.length ?? 1)
 		startAudio()
 	}
 
@@ -63,12 +72,9 @@ export const useAudioState = defineStore('player', () => {
 	}
 
 	// setup
-	if (currentTrack.value) {
-		_audio.value.src = currentTrack.value.url
-		updateMetadata()
-	}
-
+	initPlayer()
 	useEventListener(_audio, 'ended', () => skipTrack())
+	// onSourceError(() => startAudio())
 
 	if ('mediaSession' in navigator) {
 		useEventListener(_audio, 'play', () => {
@@ -96,16 +102,10 @@ export const useAudioState = defineStore('player', () => {
 	}
 
 	return {
-		_audio,
-		// audio state
+		// states
 		playing,
 		duration,
 		currentTime,
-
-		// playlist state
-		playlist,
-		currentIndex,
-		currentTrack,
 
 		// actions
 		setTrack,

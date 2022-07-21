@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonItem, IonThumbnail, IonLabel, IonImg } from '@ionic/vue'
-import { useAudioState } from '@/modules/player/store/audio'
+import { Track, usePlayerState } from '@/modules/player/store'
+import { getImageUrl } from '@/utils/bandcamp'
 
-import type { ITrack } from '@/utils/initial-data'
+const props = defineProps<{ track: Track; playlist: string; index: number; isActive: boolean }>()
 
 const router = useRouter()
-const player = useAudioState()
-const props = defineProps<{ track: ITrack; index: number }>()
-
-const isActive = computed(() => props.track.url === player.currentTrack.url)
+const player = usePlayerState()
 
 const onPressed = () => {
-	if (player.currentTrack?.url === props.track.url) {
-		router.push('/player')
-	} else {
-		// Works only on single playlist
-		player.setTrack(props.index)
-	}
+	props.isActive ? router.push('/player') : player.setTrack(props.playlist, props.index)
 }
 </script>
 
 <template>
 	<ion-item button @click="onPressed" :detail="false" class="item" lines="none">
 		<ion-thumbnail slot="start" class="thumb">
-			<ion-img :src="track.artwork_url" :alt="track.title" />
+			<ion-img :src="getImageUrl(track.art_id)" :alt="track.title" />
 		</ion-thumbnail>
 		<ion-label :color="isActive ? 'primary' : 'dark'">
 			<h2>{{ track.title }}</h2>
