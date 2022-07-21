@@ -20,10 +20,12 @@ import type {
 	RangeKnobMoveEndEventDetail,
 } from '@ionic/core'
 
+import { getImageUrl } from '@/utils/bandcamp'
 import { formatSongTime } from '@/utils/second-format'
-import { useAudioState } from './store/audio'
+import { usePlayerState, usePlaylistState } from './store'
 
-const player = useAudioState()
+const player = usePlayerState()
+const playlist = usePlaylistState()
 const status = reactive({
 	sync: true,
 	lastValue: 0,
@@ -64,17 +66,17 @@ const seekTo = ({ detail }: IonRangeCustomEvent<RangeKnobMoveEndEventDetail>) =>
 		<ion-content :scroll-y="false">
 			<div class="flex justify-center">
 				<img
-					:src="player.currentTrack.artwork_url"
-					:alt="player.currentTrack.title"
+					:src="getImageUrl(playlist.currentTrack.art_id, 10)"
+					:alt="playlist.currentTrack.title"
 					class="w-60 rounded-md"
 				/>
 			</div>
 
 			<ion-label class="text-center pt-6 pb-2">
 				<h2>
-					<strong>{{ player.currentTrack.title }}</strong>
+					<strong>{{ playlist.currentTrack.title }}</strong>
 				</h2>
-				<h3>{{ player.currentTrack.artist }}</h3>
+				<h3>{{ playlist.currentTrack.artist }}</h3>
 			</ion-label>
 
 			<div class="w-11/12 mx-auto">

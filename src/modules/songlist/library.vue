@@ -10,11 +10,10 @@ import {
 } from '@ionic/vue'
 import ListItem from './list-item.vue'
 import PlayerTab from '@/modules/player/player-tab.vue'
+import { usePlaylistState } from '@/modules/player/store'
 
-// TEMP: replace this with playlist store
-import { getSongs } from '@/utils/initial-data'
-
-const songs = getSongs()
+const playlist = usePlaylistState()
+const name = 'favorite'
 </script>
 
 <template>
@@ -34,10 +33,12 @@ const songs = getSongs()
 
 			<ion-list>
 				<list-item
-					v-for="(track, index) in songs"
+					v-for="(track, index) in playlist.getPlaylist(name)"
 					:key="track.artist + track.title"
 					:track="track"
+					:playlist="name"
 					:index="index"
+					:isActive="track.url === playlist.currentTrack?.url"
 				/>
 			</ion-list>
 		</ion-content>

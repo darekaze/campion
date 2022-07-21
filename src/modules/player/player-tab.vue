@@ -2,10 +2,13 @@
 import { useRouter } from 'vue-router'
 import { IonToolbar, IonLabel, IonIcon, IonThumbnail, IonButtons, IonButton } from '@ionic/vue'
 import { play, pause, playForward } from 'ionicons/icons'
-import { useAudioState } from './store/audio'
+
+import { getImageUrl } from '@/utils/bandcamp'
+import { usePlayerState, usePlaylistState } from './store'
 
 const router = useRouter()
-const player = useAudioState()
+const player = usePlayerState()
+const playlist = usePlaylistState()
 
 const onPlayPressed = (event: Event) => {
 	player.playing = !player.playing
@@ -23,13 +26,13 @@ const onPressed = () => {
 </script>
 
 <template>
-	<ion-toolbar class="flex items-center toolbar" @click="onPressed">
+	<ion-toolbar v-if="playlist.currentTrack" class="flex items-center toolbar" @click="onPressed">
 		<ion-thumbnail slot="start" class="thumb my-2 mr-2">
-			<img :src="player.currentTrack.artwork_url" :alt="player.currentTrack.title" />
+			<img :src="getImageUrl(playlist.currentTrack.art_id)" :alt="playlist.currentTrack.title" />
 		</ion-thumbnail>
 		<ion-label>
-			<h3>{{ player.currentTrack.title }}</h3>
-			<p>{{ player.currentTrack.artist }}</p>
+			<h3>{{ playlist.currentTrack.title }}</h3>
+			<p>{{ playlist.currentTrack.artist }}</p>
 		</ion-label>
 		<ion-buttons slot="end">
 			<ion-button color="dark" @click="onPlayPressed">
