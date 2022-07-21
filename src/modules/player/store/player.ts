@@ -8,7 +8,7 @@ import { getImageUrl, fetchStreamUrl } from '@/utils/bandcamp'
 
 export const usePlayerState = defineStore('player', () => {
 	const _audio = ref(new Audio())
-	const { playing, currentTime, duration, onSourceError } = useMediaControls(_audio)
+	const { playing, currentTime, duration } = useMediaControls(_audio)
 	const playlist = usePlaylistState()
 
 	// utils
