@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useMediaControls, useEventListener, useTitle } from '@vueuse/core'
 import { usePlaylistState } from './playlist'
-import { getImageUrl, fetchStreamUrl } from '@/utils/bandcamp'
+import { getImageUrl } from '@/utils/bandcamp'
 
 export const usePlayerState = defineStore('player', () => {
 	const _audio = ref(new Audio())
@@ -40,14 +40,14 @@ export const usePlayerState = defineStore('player', () => {
 	const initPlayer = async () => {
 		if (!playlist.currentTrack) return
 
-		_audio.value.src = await fetchStreamUrl(playlist.currentTrack.url)
+		_audio.value.src = await playlist.getStreamUrl(playlist.currentTrack.url)
 		updateMetadata()
 	}
 
 	const startAudio = async () => {
 		if (!playlist.currentTrack) return
 		try {
-			_audio.value.src = await fetchStreamUrl(playlist.currentTrack.url)
+			_audio.value.src = await playlist.getStreamUrl(playlist.currentTrack.url)
 			await _audio.value.play()
 			updateMetadata()
 			updatePositionState()
