@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { IonItem, IonThumbnail, IonLabel, IonImg, IonIcon, toastController } from '@ionic/vue'
 import { Track, usePlaylistState } from '@/modules/player/store'
 import { getImageUrl } from '@/utils/bandcamp'
 import { addCircleOutline, musicalNote } from 'ionicons/icons'
 
 const props = defineProps<{ track: Track }>()
+const toast = ref<HTMLIonToastElement>()
 
 const playlist = usePlaylistState()
 
@@ -14,13 +16,14 @@ const onPressed = async () => {
 		? `${props.track.title} added to playlist`
 		: `${props.track.title} already in playlist`
 
-	const toast = await toastController.create({
+	toast.value?.dismiss()
+	toast.value = await toastController.create({
 		position: 'top',
 		duration: 1500,
 		icon: musicalNote,
 		message,
 	})
-	return toast.present()
+	return toast.value.present()
 }
 </script>
 
