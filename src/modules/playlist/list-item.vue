@@ -23,9 +23,8 @@ const onPressed = () => {
 }
 
 const onDelete = () => {
-	// FIXME: how to handle when there's no songs left
 	playlist.removeTrackFromPlaylist(props.playlist, props.index)
-	props.isActive && player.setTrack(props.playlist, props.index)
+	props.isActive && player.setTrack(props.playlist, playlist.index)
 }
 </script>
 

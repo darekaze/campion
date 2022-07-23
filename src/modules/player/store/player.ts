@@ -4,8 +4,6 @@ import { useMediaControls, useEventListener, useTitle } from '@vueuse/core'
 import { usePlaylistState } from './playlist'
 import { getImageUrl, fetchStreamUrl } from '@/utils/bandcamp'
 
-// LATER: impl. a cache called streamUrlCaches somewhere
-
 export const usePlayerState = defineStore('player', () => {
 	const _audio = ref(new Audio())
 	const { playing, currentTime, duration } = useMediaControls(_audio)

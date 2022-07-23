@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
-
-// TEMP: songs
 import { getSongs } from '@/utils/initial-data'
 
 export type Track = {
@@ -16,6 +14,8 @@ export type Track = {
 export type Playlists = {
 	[key: string]: Track[]
 }
+
+// LATER: impl. a cache called streamUrlCaches somewhere
 
 export const usePlaylistState = defineStore('playlist', {
 	state: () => {
@@ -52,6 +52,11 @@ export const usePlaylistState = defineStore('playlist', {
 		},
 		removeTrackFromPlaylist(name: string, index: number) {
 			this.playlists[name]?.splice(index, 1)
+
+			// Adjust track if index is bigger than current index
+			this.index > index && (this.index -= 1)
+			// Reset index to 0 if index is final
+			this.index >= this.playlists[name]?.length && (this.index = 0)
 		},
 		// LATER: reorder
 	},

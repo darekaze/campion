@@ -2,20 +2,20 @@ import { Track } from '@/modules/player/store'
 
 const songs: Track[] = [
 	{
-		id: 136118456,
-		art_id: 1569829819,
-		title: 'XTREME',
-		artist: 'USAO',
-		album: 'XTREME',
-		url: 'https://usao.bandcamp.com/track/xtreme',
+		id: 2524848285,
+		art_id: 2830054459,
+		title: 'crystallized',
+		artist: 'かめりあ(Camellia)',
+		album: 'crystallized',
+		url: 'https://cametek.bandcamp.com/track/crystallized',
 	},
 	{
-		id: 3377178725,
-		art_id: 4225425949,
-		title: 'Cthugha',
-		artist: 'USAO',
-		album: 'Cthugha',
-		url: 'https://tanoc.bandcamp.com/track/cthugha',
+		id: 3445933713,
+		art_id: 2155786442,
+		title: 'Lau-Fi',
+		artist: 'Laur',
+		album: 'IRREGULAR NATION 8',
+		url: 'https://tanoc.bandcamp.com/track/lau-fi-2',
 	},
 	{
 		id: 2462169050,
