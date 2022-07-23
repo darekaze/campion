@@ -9,8 +9,12 @@ import {
 	IonFooter,
 } from '@ionic/vue'
 import ListItem from './list-item.vue'
-import PlayerTab from '@/modules/player/player-tab.vue'
 import { usePlaylistState } from '@/modules/player/store'
+
+// TODO: this doesn't belongs to here
+import PlayerTab from '@/modules/tab/player-tab.vue'
+
+// LATER: reorder
 
 const playlist = usePlaylistState()
 const name = 'favorite'

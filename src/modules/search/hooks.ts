@@ -1,8 +1,9 @@
 import ky from 'ky'
-import { useQuery } from 'vue-query'
 import { computed, Ref } from 'vue'
+import { useQuery } from 'vue-query'
+import type { Track } from '@/modules/player/store'
 
-export type BCItem = {
+type BCItem = {
 	id: number
 	art_id: number
 	name: string
@@ -12,11 +13,21 @@ export type BCItem = {
 }
 
 export const useSearchQuery = (query: Ref<string>) =>
-	useQuery<BCItem[]>(
+	useQuery(
 		['search', query],
-		() => ky.get('/api/search', { searchParams: { q: query.value } }).json(),
+		() => ky.get('/api/search', { searchParams: { q: query.value } }).json<BCItem[]>(),
 		{
 			refetchOnWindowFocus: false,
+			keepPreviousData: true,
 			enabled: computed(() => !!query.value),
+			select: (items) =>
+				items.map<Track>((i) => ({
+					id: i.id,
+					art_id: i.art_id,
+					title: i.name,
+					artist: i.artist,
+					album: i.album ?? i.name,
+					url: i.url,
+				})),
 		},
 	)
