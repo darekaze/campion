@@ -1,19 +1,26 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { IonItem, IonThumbnail, IonLabel, IonImg } from '@ionic/vue'
-import { Track, usePlayerState } from '@/modules/player/store'
+import { IonItem, IonThumbnail, IonLabel, IonImg, IonIcon, toastController } from '@ionic/vue'
+import { Track, usePlaylistState } from '@/modules/player/store'
 import { getImageUrl } from '@/utils/bandcamp'
-import { addCircleOutline } from 'ionicons/icons'
+import { addCircleOutline, musicalNote } from 'ionicons/icons'
 
 const props = defineProps<{ track: Track }>()
 
-const router = useRouter()
-const player = usePlayerState()
+const playlist = usePlaylistState()
 
-const onPressed = () => {
-	console.log(props.track.title)
-	// TODO: handle with recent playlist
-	// props.isActive ? router.push('/player') : player.setTrack(props.playlist, props.index)
+const onPressed = async () => {
+	const added = playlist.addTrackToPlaylist('favorite', props.track)
+	const message = added
+		? `${props.track.title} added to playlist`
+		: `${props.track.title} already in playlist`
+
+	const toast = await toastController.create({
+		position: 'top',
+		duration: 1500,
+		icon: musicalNote,
+		message,
+	})
+	return toast.present()
 }
 </script>
 
