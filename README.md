@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/darekaze/campion" rel="noopener noreferrer"><img src="public/masked-icon.png" alt="Campion Logo" width="400"/></a></p>
+<p align="center"><a href="https://github.com/darekaze/campion" rel="noopener noreferrer"><img src="public/masked-icon.png" alt="Campion Logo" width="144"/></a></p>
 
 <h1 align="center">Campion</h1>
 <p align="center">PWA BandCamp Music Player</p>
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-<a href="https://vercel.com/?utm_source=discordjs&utm_campaign=oss"><img src=".github/powered-by-vercel.svg" alt="Vercel" /></a>
+<a href="https://campion.vercel.app"><img src=".github/powered-by-vercel.svg" alt="Vercel" /></a>
 </p>
 
 
