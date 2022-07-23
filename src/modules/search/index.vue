@@ -1,38 +1,43 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { refDebounced } from '@vueuse/core'
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue'
+import {
+	IonPage,
+	IonHeader,
+	IonToolbar,
+	IonTitle,
+	IonSearchbar,
+	IonSpinner,
+	IonContent,
+	IonList,
+} from '@ionic/vue'
+import SearchItem from './search-item.vue'
 import { useSearchQuery } from './hooks'
 
 const input = ref('')
-const query = refDebounced(input, 600)
-
-const { isLoading, isError, data } = useSearchQuery(query)
+const { isFetching, isError, data } = useSearchQuery(input)
 </script>
 
 <template>
 	<ion-page>
-		<ion-header>
+		<ion-header translucent>
 			<ion-toolbar>
 				<ion-title>Search</ion-title>
+				<ion-spinner slot="end" v-show="isFetching" name="crescent" color="primary" />
+			</ion-toolbar>
+			<ion-toolbar>
+				<ion-searchbar
+					v-model="input"
+					:debounce="600"
+					show-cancel-button="focus"
+					placeholder="Search by Artist, Track..."
+				/>
 			</ion-toolbar>
 		</ion-header>
 		<ion-content :fullscreen="true">
-			<ion-header collapse="condense">
-				<ion-toolbar>
-					<ion-title size="large">Search</ion-title>
-				</ion-toolbar>
-			</ion-header>
-
-			<div class="flex-col text-center">
-				<input v-model="input" placeholder="Try to type anything..." type="text" />
-
-				<span v-if="isLoading">Loading...</span>
-				<span v-else-if="isError">Error Occured</span>
-				<ul v-else>
-					<li v-for="track in data" :key="track.id">{{ track.name }}</li>
-				</ul>
-			</div>
+			<div v-if="isError" class="text-center">Error Occured</div>
+			<ion-list v-else>
+				<search-item v-for="track in data" :key="track.id" :track="track" />
+			</ion-list>
 		</ion-content>
 	</ion-page>
 </template>

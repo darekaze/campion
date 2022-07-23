@@ -3,14 +3,17 @@ import { useRouter } from 'vue-router'
 import { IonItem, IonThumbnail, IonLabel, IonImg } from '@ionic/vue'
 import { Track, usePlayerState } from '@/modules/player/store'
 import { getImageUrl } from '@/utils/bandcamp'
+import { addCircleOutline } from 'ionicons/icons'
 
-const props = defineProps<{ track: Track; playlist: string; index: number; isActive: boolean }>()
+const props = defineProps<{ track: Track }>()
 
 const router = useRouter()
 const player = usePlayerState()
 
 const onPressed = () => {
-	props.isActive ? router.push('/player') : player.setTrack(props.playlist, props.index)
+	console.log(props.track.title)
+	// TODO: handle with recent playlist
+	// props.isActive ? router.push('/player') : player.setTrack(props.playlist, props.index)
 }
 </script>
 
@@ -19,10 +22,11 @@ const onPressed = () => {
 		<ion-thumbnail slot="start" class="thumb">
 			<ion-img :src="getImageUrl(track.art_id)" :alt="track.title" />
 		</ion-thumbnail>
-		<ion-label :color="isActive ? 'primary' : 'dark'">
+		<ion-label>
 			<h2>{{ track.title }}</h2>
 			<p>{{ track.artist }}</p>
 		</ion-label>
+		<ion-icon slot="end" :icon="addCircleOutline" />
 	</ion-item>
 </template>
 

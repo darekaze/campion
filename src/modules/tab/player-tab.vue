@@ -3,8 +3,8 @@ import { useRouter } from 'vue-router'
 import { IonToolbar, IonLabel, IonIcon, IonThumbnail, IonButtons, IonButton } from '@ionic/vue'
 import { play, pause, playForward } from 'ionicons/icons'
 
+import { usePlayerState, usePlaylistState } from '@/modules/player/store'
 import { getImageUrl } from '@/utils/bandcamp'
-import { usePlayerState, usePlaylistState } from './store'
 
 const router = useRouter()
 const player = usePlayerState()
