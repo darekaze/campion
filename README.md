@@ -8,9 +8,8 @@
 	<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License"></a>
   <a href=".github/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PR welcome"></a>
 </p>
-
 <p align="center">
-<a href="https://campion.vercel.app"><img src=".github/powered-by-vercel.svg" alt="Vercel" /></a>
+<a href="https://campion.vercel.app"><img src=".github/powered-by-vercel.svg" alt="Vercel" width="140" /></a>
 </p>
 
 
