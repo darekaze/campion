@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-	IonPage,
-	IonHeader,
-	IonToolbar,
-	IonTitle,
-	IonContent,
-	IonList,
-	IonFooter,
-} from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList } from '@ionic/vue'
 import ListItem from './list-item.vue'
 import { usePlaylistState } from '@/modules/player/store'
 
@@ -35,11 +27,11 @@ const name = 'favorite'
 			<ion-list>
 				<list-item
 					v-for="(track, index) in playlist.getPlaylist(name)"
-					:key="track.artist + track.title"
+					:key="track.id"
 					:track="track"
 					:playlist="name"
 					:index="index"
-					:isActive="track.url === playlist.currentTrack?.url"
+					:isActive="playlist.key === name && playlist.index === index"
 				/>
 			</ion-list>
 		</ion-content>
