@@ -19,8 +19,10 @@ export type Playlists = {
 
 export const usePlaylistState = defineStore('playlist', {
 	state: () => {
-		// TEMP: initial data for testing
-		const playlists = useStorage<Playlists>('playlists', { favorite: getSongs() })
+		const playlists = useStorage<Playlists>('playlists', {
+			favorite: getSongs(),
+			recent: [],
+		})
 		const key = useStorage('activeKey', '')
 		const index = useStorage('currentIndex', 0)
 
@@ -38,8 +40,19 @@ export const usePlaylistState = defineStore('playlist', {
 		},
 	},
 	actions: {
-		// TODO: impl. playlist actions
-		// https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state
-		// addItemToPlayList
+		addTrackToPlaylist(name: string, track: Track) {
+			const exist = this.playlists[name]?.some((i) => i.id === track.id)
+
+			if (!exist) {
+				this.playlists[name]?.push(track)
+				return true
+			}
+
+			return false
+		},
+		removeTrackFromPlaylist(name: string, index: number) {
+			this.playlists[name]?.splice(index, 1)
+		},
+		// LATER: reorder
 	},
 })
