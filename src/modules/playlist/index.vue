@@ -11,9 +11,6 @@ import {
 import ListItem from './list-item.vue'
 import { usePlaylistState } from '@/modules/player/store'
 
-// TODO: this doesn't belongs to here
-import PlayerTab from '@/modules/tab/player-tab.vue'
-
 // LATER: reorder
 
 const playlist = usePlaylistState()
@@ -46,9 +43,5 @@ const name = 'favorite'
 				/>
 			</ion-list>
 		</ion-content>
-
-		<ion-footer>
-			<player-tab />
-		</ion-footer>
 	</ion-page>
 </template>
