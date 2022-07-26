@@ -63,10 +63,11 @@ export const usePlayerState = defineStore('player', () => {
 	const skipTrack = (forward = true) => {
 		if (playlist.currentPlaylist?.length <= 1) return
 
-		playlist.index =
-			playlist.index < 0
-				? playlist.currentPlaylist.length - 1
-				: (playlist.index + (forward ? 1 : -1)) % playlist.currentPlaylist.length
+		if (!forward && playlist.index <= 0) {
+			playlist.index = playlist.currentPlaylist.length - 1
+		} else {
+			playlist.index = (playlist.index + (forward ? 1 : -1)) % playlist.currentPlaylist.length
+		}
 
 		startAudio()
 	}
