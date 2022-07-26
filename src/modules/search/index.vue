@@ -17,12 +17,8 @@ const input = ref('')
 const searchbar = ref()
 const { isFetching, isError, data } = useSearchQuery(input)
 
-const onSubmit = (e: any) => {
-	e.target.blur()
-}
-
 onIonViewDidEnter(() => {
-	searchbar.value?.$el.setFocus()
+	!data.value && searchbar.value?.$el.setFocus()
 })
 </script>
 
@@ -39,7 +35,7 @@ onIonViewDidEnter(() => {
 					v-model="input"
 					:debounce="600"
 					placeholder="Search by Artist, Track..."
-					@keyup.enter="onSubmit"
+					@keyup.enter="(e) => e.target.blur()"
 				/>
 			</ion-toolbar>
 		</ion-header>
