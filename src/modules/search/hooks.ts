@@ -3,6 +3,8 @@ import { computed, Ref } from 'vue'
 import { useQuery } from 'vue-query'
 import type { Track } from '@/modules/player/store'
 
+const STALE_TIME = 5 * 60 * 1000 // 5 mins
+
 type BCItem = {
 	id: number
 	art_id: number
@@ -17,6 +19,7 @@ export const useSearchQuery = (query: Ref<string>) =>
 		['search', query],
 		() => ky.get('/api/search', { searchParams: { q: query.value } }).json<BCItem[]>(),
 		{
+			staleTime: STALE_TIME,
 			refetchOnWindowFocus: false,
 			keepPreviousData: true,
 			enabled: computed(() => !!query.value),
