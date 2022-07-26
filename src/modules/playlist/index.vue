@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonText } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonText } from '@ionic/vue'
 import ListItem from './list-item.vue'
 import { usePlaylistState } from '@/modules/player/store'
 
@@ -37,7 +37,8 @@ const isEmpty = computed(() => playlist.getPlaylist(name).length <= 0)
 				</p>
 			</div>
 
-			<ion-list v-else>
+			<!-- LATER: use virtual scroll for performance -->
+			<div v-else>
 				<list-item
 					v-for="(track, index) in playlist.getPlaylist(name)"
 					:key="track.id"
@@ -46,7 +47,7 @@ const isEmpty = computed(() => playlist.getPlaylist(name).length <= 0)
 					:index="index"
 					:isActive="playlist.key === name && playlist.index === index"
 				/>
-			</ion-list>
+			</div>
 		</ion-content>
 	</ion-page>
 </template>

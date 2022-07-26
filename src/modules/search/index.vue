@@ -8,13 +8,22 @@ import {
 	IonSearchbar,
 	IonSpinner,
 	IonContent,
-	IonList,
+	onIonViewDidEnter,
 } from '@ionic/vue'
 import SearchItem from './search-item.vue'
 import { useSearchQuery } from './hooks'
 
 const input = ref('')
+const searchbar = ref()
 const { isFetching, isError, data } = useSearchQuery(input)
+
+const onSubmit = (e: any) => {
+	e.target.blur()
+}
+
+onIonViewDidEnter(() => {
+	searchbar.value?.$el.setFocus()
+})
 </script>
 
 <template>
@@ -26,18 +35,21 @@ const { isFetching, isError, data } = useSearchQuery(input)
 			</ion-toolbar>
 			<ion-toolbar>
 				<ion-searchbar
+					ref="searchbar"
 					v-model="input"
 					:debounce="600"
-					show-cancel-button="focus"
 					placeholder="Search by Artist, Track..."
+					@keyup.enter="onSubmit"
 				/>
 			</ion-toolbar>
 		</ion-header>
 		<ion-content :fullscreen="true">
 			<div v-if="isError" class="text-center">Error Occured</div>
-			<ion-list v-else>
+
+			<!-- LATER: use virtual scroll for performance -->
+			<div v-else>
 				<search-item v-for="track in data" :key="track.id" :track="track" />
-			</ion-list>
+			</div>
 		</ion-content>
 	</ion-page>
 </template>
