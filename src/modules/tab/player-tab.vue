@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonToolbar, IonLabel, IonIcon, IonThumbnail, IonButtons, IonButton } from '@ionic/vue'
 import { play, pause, playForward } from 'ionicons/icons'
@@ -9,6 +10,8 @@ import { getImageUrl } from '@/utils/bandcamp'
 const router = useRouter()
 const player = usePlayerState()
 const playlist = usePlaylistState()
+
+const width = computed(() => `${((player.currentTime / player.duration) * 100).toFixed(2)}%`)
 
 const onPlayPressed = (event: Event) => {
 	player.playing = !player.playing
@@ -44,6 +47,11 @@ const onPressed = () => {
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
+	<div class="w-full">
+		<div class="visible flex h-0.4 bg-light-900">
+			<div class="flex-col justify-center bg-purple-500" :style="{ width }"></div>
+		</div>
+	</div>
 </template>
 
 <style scoped>
